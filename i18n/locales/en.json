@@ -1,0 +1,8 @@
+{
+    "user":"User",
+    "pw":"Password",
+    "login":"Login",
+    "remember": "Remember me",
+    "welcome": "Welcome to login",
+    "border": "International Border Reporting System"
+}

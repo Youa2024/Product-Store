@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Sans+Lao&display=swap");
+
+@font-face {
+  font-family: "SaysetthaOT";
+  src: url("@/assets/fonts/saysettha_ot.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html[lang="la"] body {
+  font-family: "Noto Sans Lao", sans-serif;
+}
+
+html[lang="en"] body {
+  font-family: "Roboto", sans-serif;
+}
+locale-la {
+  font-family: 'Noto Sans Lao', sans-serif;
+}
+
+locale-en {
+  font-family: 'Roboto', sans-serif;
+}
+
+locale-zh {
+  font-family: 'Noto Sans SC', sans-serif;
+}
