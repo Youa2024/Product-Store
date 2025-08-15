@@ -1,26 +1,64 @@
-// // composables/useAuth.ts
-// export const useAuth = () => {
-//   const token = useCookie<string | null>('token')
+export const useAuth = () => {
+  const user = useState<string | null>("auth_user", () => null); // global reactive user
+  const token = useState("auth_token", () => null); // global reactive token
+  const userData = useState<string | null>("userData", () => null);
+  const tokenCookie = useCookie<string | null>("auth_user");
 
-//   const login = async (email: string, password: string) => {
-//     try {
-//       const res = await $fetch<{ token: string }>('/api/login', {
-//         method: 'POST',
-//         body: { email, password },
-//       })
-//       token.value = res.token
-//       return true
-//     } catch (e) {
-//       return false
-//     }
-//   }
+  // function==============
 
-//   const logout = () => {
-//     token.value = null
-//     navigateTo('/login')
-//   }
+  const login = async (username: string, password: string, header: string) => {
+    const { $axios } = useNuxtApp();
+    const headers = {
+      lng: header,
+    };
+    const body = {
+      username: username,
+      password: password,
+    };
+    // Call your backend API here
+    const res = await $axios.post("custom/authenticate/login", body, {
+      headers,
+    });
+    console.log(
+      "============================login data============:",
+      res.data.status
+    );
+    if (res.data.status != "00") {
+    } else {
+      user.value = username;
+      tokenCookie.value = username;
+      //  dataCoookie.vaue=res.data.dataResponse;
 
-//   const isLoggedIn = computed(() => !!token.value)
+      token.value = res.data.status;
+      userData.value = res.data.dataResponse;
 
-//   return { token, login, logout, isLoggedIn }
-// }
+      if (process.client) {
+        localStorage.setItem("userData", JSON.stringify(res.data.dataResponse));
+      }
+
+    }
+  };
+
+  const logout = () => {
+    user.value = null;
+    token.value = null;
+    userData.value = null;
+    localStorage.setItem("userData", "");
+  };
+  // Restore session from cookie
+  const restoreSession = async () => {
+    if (!token.value && tokenCookie.value) {
+      try {
+        if (process.client) {
+          const stored = localStorage.getItem("userData");
+          userData.value = stored ? JSON.parse(stored) : null;
+        }
+
+        user.value = tokenCookie.value;
+      } catch (e) {
+        logout();
+      }
+    }
+  };
+  return { user, token, login, logout, userData, restoreSession };
+};

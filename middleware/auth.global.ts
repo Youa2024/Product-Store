@@ -1,14 +1,12 @@
-import { useUserSession } from "../composables/useUser";
+export default defineNuxtRouteMiddleware(async (to) => {
+  if (to.path === "/login") return;
 
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { loggedIn } = useUserSession();
-  // Prevent redirect loop
-  if (!loggedIn.value && to.path !== "/login") {
+  const { user, restoreSession } = useAuth();
+  //  const { restoreSession } = uselang()
+  await restoreSession();
+  // await restoreSession()
+
+  if (!user.value) {
     return navigateTo("/login");
-  }
-
-  // Optional: redirect logged-in users away from login
-  if (loggedIn.value && to.path === "/login") {
-    return navigateTo("/home");
   }
 });

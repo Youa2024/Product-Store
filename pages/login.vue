@@ -47,7 +47,7 @@
                     ></v-checkbox>
                     <Mbtn
                       :label="$t('login')"
-                      @click="login"
+                      @click="handleLogin"
                       rounded
                       block
                     ></Mbtn></v-col
@@ -64,6 +64,8 @@ const { showSuccess, showError, showWarning, showConfirm } = useAlert();
 import { ref } from "vue";
 import { useUserSession } from "../composables/useUser";
 import { useRouter } from "#imports";
+import nuxtStorage from "nuxt-storage";
+const { login } = useAuth();
 const { setUser, loggedIn } = useUserSession();
 const { $axios } = useNuxtApp();
 
@@ -73,9 +75,6 @@ const user = ref(null);
 const remober = ref(true);
 const router = useRouter();
 
-// onMounted(() => {
-//   setUser({ username: "john" });
-// });
 watch([user, password], ([newUser, newPass]) => {
   console.log("User changed:", newUser);
   console.log("Password changed:", newPass);
@@ -83,53 +82,15 @@ watch([user, password], ([newUser, newPass]) => {
 watch(user, (val) => {
   console.log("user changed:", val);
 });
-
-/// login function
-const login = async () => {
-  const headers = {
-    lng: locale.value,
-  };
-  const body = {
-    username: user.value,
-    password: password.value,
-  };
-  console.log("======body=======", body);
-  console.log("============================header============:", headers);
-  const res = await $axios.post("/login", body, { headers });
-  console.log(
-    "============================login data============:",
-    res.data.status
-  );
-  if (res.data.status != "00") {
-  } else {
-    const userStore = useUserStore();
-    // userStore.username = user.value;
-    // userStore.pw = password.value;
-    // userStore.lng = locale.value;
-    userStore.setUserData(res.data.dataResponse);
-
-    console.log(
-      "============================login data============:",
-      userStore.userData.accessToken
-    );
-
-    setUser({ username: user.value });
-    await router.push({
-      path: "/home",
-      query: { user: user.value, pw: password.value },
-    });
-    console.log("=============", router);
-
-    console.log(
-      "============================login data2223332============:",
-      loggedIn.value
-    );
+const handleLogin = async () => {
+  try {
+    await login(user.value, password.value, locale.value).then(() => {});
+    await navigateTo("/home");
+  } catch (e) {
+    console.log("error==================", e);
   }
-  // } catch (err) {
-  // console.error("Login error:", err);
-  //  console.error("Login error:", error?.message ?? error)
-  // }
 };
+
 </script>
 
 <style scoped>

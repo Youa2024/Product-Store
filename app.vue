@@ -3,41 +3,37 @@
     <NuxtPage />
   </NuxtLayout>
 </template>
+<!-- <script setup>
+import { useI18n } from "#imports";
 
-<script setup>
-import { useI18n } from "vue-i18n";
-const { locale } = useI18n();
-watch(locale, (newLocale) => {
-  useHead({
-    htmlAttrs: {
-      lang: newLocale,
-    },
-  });
+const { locales, setLocale, locale } = useI18n();
+const saved = useCookie("app-locale").value;
+
+// if (saved && locales.value.some((l) => l.code === saved)) {
+//   setLocale(saved);
+//   console.log("main lang===============", saved);
+// }
+import { onMounted } from "vue";
+
+onMounted(() => {
+  if (
+    saved &&
+    locales.value.some((l) => l.code === saved) &&
+    saved !== locale.value
+  ) {
+    setLocale(saved);
+    console.log("main lang===============", saved);
+  }
 });
-useHead({
-  link: [
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@700&display=swap",
-    },
-  ],
+</script> -->
+<!-- <script setup>
+import { useI18n, useCookie } from '#imports';
 
-  htmlAttrs: {
-    lang: locale.value,
-  },
-});
-</script>
-<style>
-html[lang="la"] body {
-  font-family: "Noto Sans Lao", sans-serif;
-  font-weight: 700;
-}
+const { locales, setLocale, locale } = useI18n();
+const saved = useCookie('app-locale').value;
 
-html[lang="zh"] body {
-  font-family: "Noto Sans Simplified Chinese", sans-serif;
+if (saved && locales.value.some(l => l.code === saved) && saved !== locale.value) {
+  setLocale(saved);
+  console.log("main lang===============", saved);
 }
-
-html[lang="en"] body {
-  font-family: "Noto Serif Ottoman Siyaq", serif;
-}
-</style>
+</script> -->

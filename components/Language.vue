@@ -12,22 +12,26 @@
 </template>
 
 <script setup>
-import { useI18n } from '#imports'
+import { useI18n } from "#imports";
 
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale } = useI18n();
 
 const availableLocales = computed(() =>
   (locales.value || []).map((l) => ({
     code: l.code,
     name: l.name,
   }))
-)
+);
 
 const selectedLocale = computed({
   get: () => locale.value,
   set: (val) => {
-    setLocale(val)
-    console.log('🌍 Locale changed to:', val)
+    setLocale(val);
+    localStorage.setItem("lang", val);
   },
-})
+});
+onMounted(() => {
+  const saved = localStorage.getItem("lang");
+  if (saved) setLocale(saved);
+});
 </script>
