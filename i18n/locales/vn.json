@@ -4,5 +4,9 @@
   "login": "Đăng nhập",
   "remember": "nhớ tôi",
   "welcome": "Chào mừng bạn đăng nhập",
-  "border": "Hệ thống báo cáo biên giới quốc tế"
+  "border": "Hệ thống báo cáo biên giới quốc tế",
+  "start_date": "ngày bắt đầu",
+  "end_date": "ngày kết thúc",
+  "to": "ĐẾN",
+  "select_date": "chọn ngày"
 }

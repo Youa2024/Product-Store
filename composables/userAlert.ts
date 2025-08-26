@@ -19,6 +19,7 @@ export const useAlert = () => {
       title: "Error",
       showCancelButton: true,
       text: message,
+
       customClass: {
         cancelButton: "my-cancel-button",
       },
@@ -30,8 +31,11 @@ export const useAlert = () => {
       title: "Error",
       confirmButtonText: "OK",
       text: message,
+      width: 500,
+      heightAuto: false,
       customClass: {
         confirmButton: "my-confirm-button",
+       
       },
     });
   };

@@ -1,27 +1,23 @@
 <template>
   <div>
     <v-dialog
-      v-model="internalValue" 
+      v-model="internalValue"
       scrollable
       :persistent="persistent"
       :overlay="false"
       :max-width="maxWidth"
       transition="dialog-transition"
-      
     >
-      <v-card width="200" height="100">
-        <v-card-text class="d-flex justify-center pt-4"
-          > <v-row justify="start" align="center"
-              ><v-col cols="3"  align="center"
-                ><v-progress-circular
-                  indeterminate
-                  color="primary"
-                ></v-progress-circular
-              ></v-col>
-              <v-col cols="6"
-                ><h3 class="lao-font pt-2">Loading...</h3></v-col
-              ></v-row
-            >
+      <v-card style="width: 300px; height: 100px">
+        <v-card-text class="d-flex justify-center pt-4">
+          <v-row justify="start" align="center">
+            <v-col cols="3" align="center">
+              <v-progress-circular indeterminate color="primary" />
+            </v-col>
+            <v-col cols="6">
+              <h3 class="lao-font pt-2">Loading...</h3>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -31,13 +27,13 @@
 <script>
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Boolean,
       default: false,
     },
     maxWidth: {
       type: [String, Number],
-      default: 300,
+      default: 600,
     },
     persistent: {
       type: Boolean,
@@ -47,24 +43,12 @@ export default {
   computed: {
     internalValue: {
       get() {
-        return this.value
+        return this.modelValue;
       },
       set(val) {
-        this.$emit('input', val)
+        this.$emit("update:modelValue", val);
       },
     },
   },
-  methods: {
-    close() {},
-  },
-}
+};
 </script>
-
-<style lang="scss" scoped>
-.parent {
- 
-  justify-content: center; /* center horizontally */
-  align-items: center;    /* center vertically */
-  
-}
-</style>

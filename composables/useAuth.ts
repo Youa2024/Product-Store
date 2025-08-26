@@ -35,7 +35,6 @@ export const useAuth = () => {
       if (process.client) {
         localStorage.setItem("userData", JSON.stringify(res.data.dataResponse));
       }
-
     }
   };
 
@@ -43,18 +42,19 @@ export const useAuth = () => {
     user.value = null;
     token.value = null;
     userData.value = null;
-    localStorage.setItem("userData", "");
+    localStorage.removeItem("userData");
+    localStorage.removeItem("lang");
   };
   // Restore session from cookie
   const restoreSession = async () => {
-    if (!token.value && tokenCookie.value) {
+    if (!token.value ) {
       try {
         if (process.client) {
           const stored = localStorage.getItem("userData");
           userData.value = stored ? JSON.parse(stored) : null;
         }
 
-        user.value = tokenCookie.value;
+       
       } catch (e) {
         logout();
       }

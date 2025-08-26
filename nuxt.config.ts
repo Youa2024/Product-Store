@@ -4,6 +4,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  imports: {
+    // Auto-import is enabled by default, but you can configure it
+    autoImport: true,
+    dirs: [
+      // These directories are scanned by default
+      "composables",
+      "utils",
+    ],
+  },
   ssr: false,
   css: [
     "vuetify/styles",
@@ -14,12 +23,15 @@ export default defineNuxtConfig({
   ],
   plugins: ["~/plugins/vue-echarts.client.ts"],
   build: {
-    transpile: ["vuetify"],
+    transpile: ["vuetify", "xlsx"],
   },
   vite: {
     plugins: [tsconfigPaths()],
     define: {
       "process.env.DEBUG": false,
+    },
+    optimizeDeps: {
+      exclude: ["html2pdf.js"],
     },
   },
 

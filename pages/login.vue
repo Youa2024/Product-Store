@@ -41,9 +41,9 @@
                     ></v-text-field>
                     <v-checkbox
                       :label="$t('remember')"
-                      model-value="true"
-                      value="value"
+                      v-model="remober"
                       color="primary"
+                      @change="checkRemember"
                     ></v-checkbox>
                     <Mbtn
                       :label="$t('login')"
@@ -72,9 +72,17 @@ const { $axios } = useNuxtApp();
 const { locale } = useI18n();
 const password = ref(null);
 const user = ref(null);
-const remober = ref(true);
+const remober = ref(false);
 const router = useRouter();
+onMounted(() => {
+  const reme = localStorage.getItem("remember");
 
+  if (reme) {
+    console.log("==============reme===========:", reme);
+    remober.value = true;
+    user.value=reme
+  }
+});
 watch([user, password], ([newUser, newPass]) => {
   console.log("User changed:", newUser);
   console.log("Password changed:", newPass);
@@ -82,6 +90,16 @@ watch([user, password], ([newUser, newPass]) => {
 watch(user, (val) => {
   console.log("user changed:", val);
 });
+const checkRemember = () => {
+  if (remober.value == true) {
+    localStorage.setItem("remember", user.value);
+    console.log("==============remember111===========:", localStorage.getItem("remember"));
+  } else {
+    localStorage.removeItem("remember");
+  }
+
+  console.log("==============remember===========:", remober);
+};
 const handleLogin = async () => {
   try {
     await login(user.value, password.value, locale.value).then(() => {});
@@ -90,7 +108,6 @@ const handleLogin = async () => {
     console.log("error==================", e);
   }
 };
-
 </script>
 
 <style scoped>

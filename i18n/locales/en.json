@@ -1,8 +1,12 @@
 {
-    "user":"User",
-    "pw":"Password",
-    "login":"Login",
-    "remember": "Remember me",
-    "welcome": "Welcome to login",
-    "border": "International Border Reporting System"
+  "user": "User",
+  "pw": "Password",
+  "login": "Login",
+  "remember": "Remember me",
+  "welcome": "Welcome to login",
+  "border": "International Border Reporting System",
+  "start_date": "Start Date",
+  "end_date": "End Date",
+  "to": "To",
+  "select_date": "Select Date"
 }

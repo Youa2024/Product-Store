@@ -7,74 +7,81 @@
       transition="scale-transition"
       offset-y
       min-width="auto"
+      
     >
-      <template v-slot:activator="{ on, attrs }">
+      <template v-slot:activator="{ props }">
         <v-text-field
-          v-model="formatterDate"
+          v-model="formattedDate"
           :label="label"
-          prepend-inner-icon="mdi-calendar"
-          readonly
           outlined
+          readonly
           :rounded="rounded"
-          v-bind="attrs"
-          v-on="on"
-        ></v-text-field>
+          v-bind="props"
+          class="primary"
+        >
+          <template v-slot:prepend-inner>
+            <v-icon color="primary">mdi-calendar</v-icon>
+            <!-- 🎨 only icon is red -->
+          </template>
+        </v-text-field>
       </template>
+
       <v-date-picker
         v-model="internalValue"
-        @input="updateDate"
+        type="date"
+        color="primary"
+        @update:model-value="updateDate"
         hide-actions
-      ></v-date-picker>
+      />
     </v-menu>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      menu: false,
-      internalValue: this.value,
-    }
-  },
   props: {
-    value: {
+    modelValue: {
       type: String,
-      default: '',
+      default: "",
     },
     label: String,
     rounded: Boolean,
-    closeOnContentClick: {
-      type: Boolean,
-      default: false,
-    },
-    // min: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // max: {
-    //   type: Boolean,
-    //   default: false,
-    // },
+  },
+  data() {
+    return {
+      menu: false,
+      internalValue: this.modelValue, // raw ISO date (YYYY-MM-DD)
+    };
   },
   watch: {
-    value(val) {
-      this.internalValue = val
+    modelValue(val) {
+      this.internalValue = val;
     },
   },
   computed: {
-    formatterDate() {
-      return this.internalValue ? this.internalValue : ''
+    formattedDate() {
+      if (!this.internalValue) return "";
+      const [year, month, day] = this.internalValue.split("-");
+      return `${year}-${month}-${day}`; // ✅ dd-mm-yyyy
     },
   },
   methods: {
     updateDate(date) {
-      this.internalValue = date
-      this.$emit('input', date)
-      this.menu = false
+      // if it's a Date object, format manually
+      let onlyDate = "";
+
+      if (date instanceof Date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        onlyDate = `${year}-${month}-${day}`; // keep ISO internally
+      } else {
+      }
+
+      this.internalValue = onlyDate;
+      this.$emit("update:modelValue", onlyDate); // parent always gets yyyy-mm-dd
+      this.menu = false;
     },
   },
-}
+};
 </script>
-
-<style lang="scss" scoped></style>

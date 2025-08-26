@@ -4,5 +4,9 @@
   "login": "登录",
   "remember": "记住账号",
   "welcome": "欢迎登录",
-  "border": "I国际边境报告系统"
+  "border": "I国际边境报告系统",
+  "start_date": "开始日期",
+  "end_date": "结束日期",
+  "to": "到",
+   "select_date": "选择日期"
 }

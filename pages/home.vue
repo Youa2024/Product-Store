@@ -1,39 +1,21 @@
 <template>
   <v-container fluid>
-    <div class="chart-container">
-      <button @click="downloadChart('png')">Download PNG</button>
-      <button @click="downloadChart('jpeg')">Download JPEG</button>
-      <button @click="downloadChart('svg')">Download SVG</button>
-      <!-- <div ref="chartRef" style="width: 600px; height: 400px"></div> -->
-    </div>
-    <div class="chart-list">
-      <div
-        v-for="(chartData, index) in visaData"
-        :key="index"
-        class="chart-item"
-      >
-        <h3>{{ chartData.borderName }}</h3>
-        <div
-          :ref="(el) => (chartRefs[index] = el)"
-          style="width: 400px; height: 300px"
-        ></div>
-      </div>
-    </div>
-    <!-- <v-row 
-      ><v-col cols="6"
+    <v-row
+      ><v-col cols="6" md="6" sm="3"
         ><v-card
-          rounded="xl"
-          class="pa-2"
-          elevation="1"
-          outlined
+          rounded="sm"
+          class="pa-2 my-card"
+          elevation="0"
+          variant="outlined"
           v-for="(val, index) in data"
-          style="margin-top: 10px;height: 660px"
+          style="margin-top: 10px; height: 660px"
         >
           <v-card-title primary-title>
-            <h4>    ລາຍງານຄົນ ແລະ ລົດ ປະຈໍາວັນ
-            <b class="text-red" style="font-size: 25px">(ຂາເຂົ້າ)</b>
-            {{ val.borderName }}</h4>
-        
+            <h5>
+              ລາຍງານຄົນ ແລະ ລົດ ປະຈໍາວັນ
+              <b class="text-red" style="font-size: 25px">(ຂາເຂົ້າ)</b>
+              {{ val.borderName }}
+            </h5>
           </v-card-title>
           <v-chart
             autoresize
@@ -43,18 +25,19 @@
         </v-card> </v-col
       ><v-col cols="6"
         ><v-card
-          rounded="xl"
-          class="pa-5"
-          elevation="1"
+          rounded="sm"
+          class="pa-5 my-card"
+          elevation="0"
           outlined
           v-for="(val, index) in data"
           style="margin-top: 10px; height: 660px"
         >
           <v-card-title primary-title>
-            <h4>   ລາຍງານຄົນ ແລະ ລົດ ປະຈໍາວັນ
-            <b class="text-red" style="font-size: 25px">(ອອກ)</b>
-            {{ val.borderName }}</h4>
-         
+            <h5>
+              ລາຍງານຄົນ ແລະ ລົດ ປະຈໍາວັນ
+              <b class="text-red" style="font-size: 25px">(ອອກ)</b>
+              {{ val.borderName }}
+            </h5>
           </v-card-title>
           <v-chart
             autoresize
@@ -62,8 +45,54 @@
             class="chart"
           />
         </v-card> </v-col
-    ></v-row> -->
-  <v-row><v-col></v-col></v-row>
+    ></v-row>
+    <v-row
+      ><v-col cols="6" v-for="(chartData, index) in visaData" :key="index">
+        <div class="chart-list">
+          <div class="chart-item">
+            <v-row
+              ><v-col cols="8">
+                <h3>{{ chartData.borderName }}</h3></v-col
+              >
+              <v-col cols="4" class="d-flex justify-end">
+                <v-menu>
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      icon="mdi-menu"
+                      variant="text"
+                      v-bind="props"
+                    ></v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item>
+                      <v-btn variant="text" @click="downloadChart('png')">
+                        Download PNG
+                      </v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn variant="text" @click="downloadChart('jpeg')">
+                        Download JPEG
+                      </v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn variant="text" @click="downloadChart('svg')">
+                        Download SVG
+                      </v-btn>
+                    </v-list-item>
+                  </v-list>
+                </v-menu></v-col
+              ></v-row
+            >
+
+            <div
+              :ref="(el) => (chartRefs[index] = el)"
+              style="width: 600px; height: 400px"
+            ></div>
+          </div></div></v-col
+    ></v-row>
+
+    <v-row><v-col></v-col></v-row>
   </v-container>
 </template>
 
@@ -72,7 +101,7 @@ definePageMeta({
   layout: "default",
 });
 
-// import
+// chart for car fee===================================================
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart, PictorialBarChart } from "echarts/charts";
@@ -134,13 +163,9 @@ const visaData = ref([]);
 const data = ref([]);
 let chart;
 const chartRefs = ref([]);
-const dataItems = ref([
-  { value: 10, amount: 50, color: "#99ff99" },
-  { value: 5, amount: 30, color: "#66ccff" },
-  { value: 8, amount: 40, color: "#ffcc66" },
-]);
+
 onMounted(async () => {
- await getData();
+  await getData();
   await nextTick();
   chartRefs.value.forEach((el, index) => {
     const chart = echarts.init(el);
@@ -149,7 +174,7 @@ onMounted(async () => {
 });
 // Watch for changes in the array and update chart
 watch(
-  dataItems,
+  userData,
   (newItems) => {
     if (chart) chart.setOption(getChartOptions(newItems));
   },
@@ -158,10 +183,10 @@ watch(
 
 const { locale } = useI18n();
 const fontFamilies = {
-  la: "Noto Sans Lao, sans-serif",
-  zh: "Noto Sans Simplified Chinese, sans-serif",
-  en: "Noto Serif Ottoman Siyaq, serif",
-  vi: "Noto Serif Ottoman Siyaq, serif",
+ la: "Saysettha OT, sans-serif",
+  zh: "Saysettha OT, sans-serif",
+  en: "Saysettha OT, sans-serif",
+  vi: "Saysettha OT, sans-serif",
 };
 // Function to generate chart car fee
 const getChartOption = (itemData) => {
@@ -185,7 +210,7 @@ const getChartOption = (itemData) => {
       type: "category",
       data: labels,
       axisLabel: {
-        fontSize: 16,
+        fontSize: 15,
         color: "#333",
         fontWeight: "bold",
         fontFamily: fontFamilies[locale.value] || fontFamilies.en,
@@ -197,10 +222,10 @@ const getChartOption = (itemData) => {
         symbolPosition: "end",
         symbolSize: [40, 40],
         symbolOffset: [40, 0],
-        // data: icons.map((icon, i) => ({
-        //   value: values[i],
-        //   symbol: `image://${icon}`,
-        // })),
+        data: icons.map((icon, i) => ({
+          value: values[i],
+          symbol: `image://${icon}`,
+        })),
       },
       {
         name: "ຈຳນວນ",
@@ -228,10 +253,11 @@ const getChartOption = (itemData) => {
 };
 
 // Dynamic array of data items
+// chart for visa fee===================================================
 
 const getChartOptions = (chartsData) => {
-  console.log("===============chartsData:",chartsData);
-  
+  console.log("===============chartsData:", chartsData);
+
   // Example: amount in $
   const visibleData = chartsData.map((chartsData) => ({
     value: chartsData.amt,
@@ -272,7 +298,7 @@ const getChartOptions = (chartsData) => {
     series: [
       {
         type: "pie",
-        radius: ["30%", "80%"],
+        radius: ["60%", "120%"],
         center: ["50%", "70%"],
         startAngle: 180,
         hoverOffset: 0,
@@ -283,6 +309,9 @@ const getChartOptions = (chartsData) => {
           color: "red",
           fontSize: 14,
           fontFamily: fontFamilies[locale.value] || fontFamilies.en,
+          // stroke settings
+          textBorderColor: "#fff", // stroke color (e.g., white border)
+          textBorderWidth: 2, // stroke thickness
         },
       },
     ],
@@ -302,11 +331,8 @@ const downloadChart = (type = "png") => {
   link.download = `chart.${type}`;
   link.click();
 };
-// clears everything in the browser
-const handleLogout = async () => {
-  logout();
-  await navigateTo("/login");
-};
+
+
 // function get data
 const getData = async () => {
   const res = await $axios.post("/custom/home", null, {
@@ -348,11 +374,15 @@ const getData = async () => {
 .chart-item {
   border: 1px solid #ccc;
   padding: 10px;
-  background: #fafafa;
+  background: #cee5f5;
 }
 .chart-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+.my-card {
+  border: 2px solid rgb(212, 214, 218);
+  border-radius: 502px; /* optional */
 }
 </style>

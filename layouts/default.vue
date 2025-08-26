@@ -58,6 +58,7 @@
               <v-list-item
                 v-for="child in user.childMenu"
                 :key="child.childMenuId"
+                :to="child.childMenuPath"
               >
                 <v-list-item-title>
                   <v-icon class="mr-3">{{ child.childIconMenu }}</v-icon
@@ -87,16 +88,29 @@ const { user, userData, logout } = useAuth();
 
 const { locale, setLocale } = useI18n();
 onMounted(() => {
+  const reme = localStorage.getItem("remember");
+  console.log("==============reme===========:", userData.value);
+  // check language====================
   const saved = localStorage.getItem("lang");
-  if (saved) setLocale(saved);
-  // console.log("default========", langCookie.value);
+  console.log("==================lang=============:", saved);
+
+  if (saved) {
+    setLocale(saved);
+    console.log("==================lang=============:", saved);
+  } else {
+    setLocale(locale.value);
+    console.log("==================locale.value=============:", locale.value);
+  }
+  // check data or list menu===================
+console.log("user data first============:",userData.value);
   if (userData.value == null) {
+    
+    
     if (process.client) {
       const stored = localStorage.getItem("userData");
       userData.value = stored ? JSON.parse(stored) : null;
+      console.log("user data list============:",userData.value);
     }
-  } else {
-    userData.value == null;
   }
 });
 
@@ -109,7 +123,7 @@ const fontLinks = {
   // la: "https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@700&display=swap",Saysettha OT
   la: "Saysettha OT, sans-serif",
   zh: "https://fonts.googleapis.com/css2?family=Noto+Sans+Simplified+Chinese&display=swap",
-  en: "https://fonts.googleapis.com/css2?family=Noto+Serif+Ottoman+Siyaq&display=swap",
+  en: "Saysettha OT, sans-serif",
   vi: "https://fonts.googleapis.com/css2?family=Noto+Serif+Ottoman+Siyaq&display=swap",
 };
 

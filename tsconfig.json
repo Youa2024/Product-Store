@@ -1,9 +1,11 @@
 {
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-     "types": ["nuxt"],
- 
+    "moduleResolution": "node",
 
+    "types": ["nuxt", "@types/node"],
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   }
-
 }
