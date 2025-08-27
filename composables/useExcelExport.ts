@@ -3,6 +3,7 @@ import ExcelJS from "exceljs";
 export const useExcelExport = () => {
   const exportBorderRevenue = async (
     rows: any[],
+    total: any[],
     date1: String,
     date2: String
   ) => {
@@ -65,6 +66,7 @@ export const useExcelExport = () => {
     sheet.mergeCells("M2:N2");
     sheet.mergeCells("O2:P2");
     sheet.mergeCells("Q2:R2");
+
     // add size to column
     for (let i = 1; i <= 10; i++) {
       sheet.getColumn(i).width = 15;
@@ -105,7 +107,13 @@ export const useExcelExport = () => {
 
     // Add data rows
     rows.forEach((r) => sheet.addRow(r));
+    console.log("total=============first=======", total);
+    // add total rows
 
+    total.forEach((r) => sheet.addRow(r));
+    sheet.mergeCells(`A${rows.length + 4}:C${rows.length + 4}`);
+    // sheet.addRow(total);
+    console.log("total===============last=====", total);
     // Style data rows (body)
     sheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
       if (rowNumber > 3) {
@@ -132,6 +140,16 @@ export const useExcelExport = () => {
         });
       }
     });
+    // 🔥 Now bold the last row
+    const lastRow = sheet.lastRow;
+    if (lastRow) {
+      lastRow.eachCell({ includeEmpty: true }, (cell) => {
+        cell.font = {
+          ...(cell.font || {}),
+          bold: true,
+        };
+      });
+    }
 
     // Export file
     const buffer = await workbook.xlsx.writeBuffer();
@@ -141,7 +159,7 @@ export const useExcelExport = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "border_revenue_report_2024.xlsx";
+    a.download = `report_sum_collection${date1}-${date2}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
   };

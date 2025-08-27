@@ -28,10 +28,14 @@
               ><v-col cols="3" md="3"
                 ><v-select
                   label="Select"
+                  v-model="selectItem"
                   variant="outlined"
                   rounded="xl"
                   density="comfortable"
-                  :items="['California', 'Colorado']"
+                  item-value="borderId"
+                  item-title="borderName"
+                  :items="role"
+                  return-object
                 ></v-select
               ></v-col>
             </v-row>
@@ -179,6 +183,7 @@ const valid = ref(false);
 const tableRef = ref(null);
 const items = ref([]);
 const itemsTotal = ref({});
+const totalArray = ref([]);
 const { $axios } = useNuxtApp();
 const { userData } = useAuth();
 const { formatNumber, formatNumber0 } = useNumberFormat();
@@ -189,28 +194,63 @@ const { showWarning } = useAlert();
 const { exportBorderRevenue } = useExcelExport();
 
 const rows = ref([]);
+const role = ref([]);
+const selectItem = ref(null);
 
 onMounted(() => {
+  getRole();
   if (tableRef.value) {
     console.log("Table element:", tableRef.value);
   }
 });
+// function get role
+const getRole = async () => {
+  const res = await $axios.get("/custom/role/borderRoleCombo.service", {
+    headers: {
+      Authorization: `Bearer ${userData.value.accessToken}`,
+    },
+  });
+  if (res.data.status == "00") {
+    role.value = res.data.dataResponse;
+    const all = {
+      userId: "all",
+      userName: "all",
+      borderId: "All",
+      borderName: "All",
+    };
+    role.value.push(all);
+    console.log("===========show role===========:", role.value);
+  } else {
+    showWarning(`${res.data.message}`);
+  }
+};
 // function get data
 function submitForm() {
   if (date1.value != null && date2.value != null) {
     searchData();
   } else {
-    console.log("date1===================", valid.value);
+    console.log("date1===================", selectItem.value.borderId);
 
     showWarning("Please Select start and end date!");
   }
 }
+const listRole = ref([]);
 const searchData = async () => {
+  if (selectItem.value.borderId === "All") {
+    role.value.pop();
+    role.value.forEach((i) => {
+      listRole.value.push(`${i.borderId}`);
+    });
+    console.log("===============listRole.value :", listRole.value);
+  }
   loading.value = true;
   let body = {
     startDate: date1.value,
     endDate: date2.value,
-    borderId: "all",
+    borderId:
+      selectItem.value.borderId === "All"
+        ? listRole.value
+        : [selectItem.value.borderId],
   };
   const res = await $axios.post("/custom/rp_sum_collection.service", body, {
     headers: {
@@ -256,12 +296,33 @@ const searchData = async () => {
         items.value[i].publicHealthTotal,
       ]);
     }
+    // for (var i = 0; itemsTotal.value.length > i; i++) {
+    totalArray.value.push([
+      "ລວມ:",
+      "",
+      "",
+      itemsTotal.value.calCustomAmount,
+      itemsTotal.value.calCustomTotal,
+      itemsTotal.value.calVisaAmount,
+      itemsTotal.value.calVisaTotal,
+      itemsTotal.value.calVisaUsdTotal,
+      itemsTotal.value.calBridgeAmount,
+      itemsTotal.value.calBridgeTotal,
+      itemsTotal.value.calTourismAmount,
+      itemsTotal.value.calTourismTotal,
+      itemsTotal.value.calImmigrationAmount,
+      itemsTotal.value.calImmigrationTotal,
+      itemsTotal.value.calAgricultureAmount,
+      itemsTotal.value.calAgricultureTotal,
+      itemsTotal.value.calPublicHealthAmount,
+      itemsTotal.value.calPublicHealthTotal,
+    ]);
+    // }
   }
-  console.log("=================items===================", rows.value);
 };
 const handleExport = () => {
   console.log("===============export==items===================", rows.value);
-  exportBorderRevenue(rows.value, date1.value, date2.value);
+  exportBorderRevenue(rows.value, totalArray.value, date1.value, date2.value);
 };
 
 const printTable = async () => {
