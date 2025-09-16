@@ -26,7 +26,7 @@ export const useAuth = () => {
     if (res.data.status != "00") {
     } else {
       user.value = username;
-      tokenCookie.value = username;
+      // tokenCookie.value = username;
       //  dataCoookie.vaue=res.data.dataResponse;
 
       token.value = res.data.status;
@@ -34,6 +34,7 @@ export const useAuth = () => {
 
       if (process.client) {
         localStorage.setItem("userData", JSON.stringify(res.data.dataResponse));
+        localStorage.setItem("user", user.value);
       }
     }
   };
@@ -44,17 +45,17 @@ export const useAuth = () => {
     userData.value = null;
     localStorage.removeItem("userData");
     localStorage.removeItem("lang");
+    localStorage.removeItem("user");
   };
   // Restore session from cookie
   const restoreSession = async () => {
-    if (!token.value ) {
+    if (!token.value) {
       try {
         if (process.client) {
           const stored = localStorage.getItem("userData");
           userData.value = stored ? JSON.parse(stored) : null;
+          user.value = stored ? localStorage.getItem("user") : null;
         }
-
-       
       } catch (e) {
         logout();
       }

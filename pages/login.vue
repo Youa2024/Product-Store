@@ -56,6 +56,7 @@
         ></v-row>
       </v-col>
     </v-row>
+    <MLoading v-model="loading"></MLoading>
   </div>
 </template>
 
@@ -74,13 +75,21 @@ const password = ref(null);
 const user = ref(null);
 const remober = ref(false);
 const router = useRouter();
+const config = useRuntimeConfig();
+const loading = ref(false);
+
 onMounted(() => {
   const reme = localStorage.getItem("remember");
-
+  if (process.env.NODE_ENV === "development") {
+    console.log("Development mode");
+    console.log("api=============", config.public.apiBase);
+  } else {
+    console.log("Production mode");
+  }
   if (reme) {
     console.log("==============reme===========:", reme);
     remober.value = true;
-    user.value=reme
+    user.value = reme;
   }
 });
 watch([user, password], ([newUser, newPass]) => {
@@ -93,7 +102,10 @@ watch(user, (val) => {
 const checkRemember = () => {
   if (remober.value == true) {
     localStorage.setItem("remember", user.value);
-    console.log("==============remember111===========:", localStorage.getItem("remember"));
+    console.log(
+      "==============remember111===========:",
+      localStorage.getItem("remember")
+    );
   } else {
     localStorage.removeItem("remember");
   }
@@ -101,8 +113,10 @@ const checkRemember = () => {
   console.log("==============remember===========:", remober);
 };
 const handleLogin = async () => {
+  loading.value = true;
   try {
     await login(user.value, password.value, locale.value).then(() => {});
+    loading.value = false;
     await navigateTo("/home");
   } catch (e) {
     console.log("error==================", e);

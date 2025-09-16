@@ -103,15 +103,7 @@ const login = async () => {
   if (res.data.status != "00") {
     showWarning(res.data.message);
   } else {
-    // const userStore = useUserStore();
-    // userStore.username = user.value;
-    // userStore.pw = password.value;
-    // userStore.lng = locale.value;
-    // userStore.setUserData(res.data.dataResponse);
-    // console.log(
-    //   "============================login data============:",
-    //   res.data.status
-    // );
+
     const { setUser } = useUserSession();
     setUser(body);
     await navigateTo("/home");

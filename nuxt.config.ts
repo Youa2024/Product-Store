@@ -20,11 +20,20 @@ export default defineNuxtConfig({
     "@/assets/css/main.css",
     "@mdi/font/css/materialdesignicons.css",
     "~/assets/css/fonts.css",
+    "@/assets/css/tailwind.css",
+    "leaflet/dist/leaflet.css",
   ],
+  postcss: {
+    plugins: {
+      "@tailwindcss/postcss": {}, // ✅ use this instead of tailwindcss: {}
+      autoprefixer: {},
+    },
+  },
   plugins: ["~/plugins/vue-echarts.client.ts"],
   build: {
     transpile: ["vuetify", "xlsx"],
   },
+
   vite: {
     plugins: [tsconfigPaths()],
     define: {
@@ -32,6 +41,11 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       exclude: ["html2pdf.js"],
+    },
+    server: {
+      watch: {
+        ignored: ["**/node_modules/**"],
+      },
     },
   },
 
@@ -69,7 +83,11 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE || "http://localhost:3000", // accessible on client + server
+      apiBase:
+        process.env.NODE_ENV === "production"
+          ? "http://10.0.10.49:9999/borderapi-prod/api/v1/"
+          : "http://10.0.10.40:9999/borderapi-prod/api/v1/",
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     },
   },
 });

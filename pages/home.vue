@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row
+    <!-- <v-row
       ><v-col cols="6" md="6" sm="3"
         ><v-card
           rounded="sm"
@@ -45,8 +45,8 @@
             class="chart"
           />
         </v-card> </v-col
-    ></v-row>
-    <v-row
+    ></v-row> -->
+    <!-- <v-row
       ><v-col cols="6" v-for="(chartData, index) in visaData" :key="index">
         <div class="chart-list">
           <div class="chart-item">
@@ -90,9 +90,57 @@
               style="width: 600px; height: 400px"
             ></div>
           </div></div></v-col
+    ></v-row> -->
+    <v-row
+      ><v-col cols="12" md="6" sm="6">
+        <v-card
+          rounded="sm"
+          class="pa-2 my-card"
+          elevation="0"
+          variant="outlined"
+          v-for="(val, index) in data"
+          style="margin-top: 10px; height: 660px"
+        >
+          <v-card-title primary-title>
+            <b>
+              ລາຍງານຄົນ ແລະ ລົດ ປະຈໍາວັນ
+              <b class="text-red" style="font-size: 25px">(ຂາເຂົ້າ)</b>
+              {{ val.borderName }}
+            </b>
+          </v-card-title>
+          <BarChart :chartsData="val.channelIn" />
+        </v-card> </v-col
+      ><v-col cols="12" md="6" sm="6">
+        <v-card
+          rounded="sm"
+          class="pa-2 my-card"
+          elevation="0"
+          variant="outlined"
+          v-for="(val, index) in data"
+          style="margin-top: 10px; height: 660px"
+        >
+          <v-card-title primary-title>
+            <h5>
+              ລາຍງານຄົນ ແລະ ລົດ ປະຈໍາວັນ
+              <b class="text-red" style="font-size: 25px">(ຂາອອກ)</b>
+              {{ val.borderName }}
+            </h5>
+          </v-card-title>
+          <BarChart :chartsData="val.channelOut" />
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row
+      ><v-col cols="6" v-for="(val, index) in visaData"
+        ><v-card
+          rounded="sm"
+          class="pa-10 my-card"
+          elevation="0"
+          variant="outlined"
+          style="height: 660px"
+        >
+          <PieChart :chartsData="val.groupFeeVisa"></PieChart> </v-card></v-col
     ></v-row>
-
-    <v-row><v-col></v-col></v-row>
   </v-container>
 </template>
 
@@ -102,9 +150,9 @@ definePageMeta({
 });
 
 // chart for car fee===================================================
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import { BarChart, PictorialBarChart } from "echarts/charts";
+// import { use } from "echarts/core";
+// import { CanvasRenderer } from "echarts/renderers";
+// import { BarChart, PictorialBarChart } from "echarts/charts";
 // import type { EChartsOption } from "echarts";
 /**
  * @typedef {import('echarts').EChartsOption} EChartsOption
@@ -140,23 +188,23 @@ import { BarChart, PictorialBarChart } from "echarts/charts";
  * @param {ChartItem[]} itemData
  * @returns {EChartsOption}
  */
-import {
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-} from "echarts/components";
-import { ref, onMounted } from "vue";
-import * as echarts from "echarts";
+// import {
+//   GridComponent,
+//   TooltipComponent,
+//   LegendComponent,
+// } from "echarts/components";
+// import { ref, onMounted } from "vue";
+// import * as echarts from "echarts";
 
-// variable
-use([
-  CanvasRenderer,
-  BarChart,
-  PictorialBarChart,
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-]);
+// // variable
+// use([
+//   CanvasRenderer,
+//   BarChart,
+//   PictorialBarChart,
+//   GridComponent,
+//   TooltipComponent,
+//   LegendComponent,
+// ]);
 const { user, userData } = useAuth();
 const { $axios } = useNuxtApp();
 const visaData = ref([]);
@@ -166,172 +214,189 @@ const chartRefs = ref([]);
 
 onMounted(async () => {
   await getData();
-  await nextTick();
-  chartRefs.value.forEach((el, index) => {
-    const chart = echarts.init(el);
-    chart.setOption(getChartOptions(visaData.value[index].groupFeeVisa));
-  });
+  // await nextTick();
+  // chartRefs.value.forEach((el, index) => {
+  //   const chart = echarts.init(el);
+  //   chart.setOption(getChartOptions(visaData.value[index].groupFeeVisa));
+  // });
 });
 // Watch for changes in the array and update chart
-watch(
-  userData,
-  (newItems) => {
-    if (chart) chart.setOption(getChartOptions(newItems));
-  },
-  { deep: true }
-);
+// watch(
+//   userData,
+//   (newItems) => {
+//     if (chart) chart.setOption(getChartOptions(newItems));
+//   },
+//   { deep: true }
+// );
+const labelss = [
+  "ລົດຂົນສົ່ງເກີນ 12 ລໍ້ ແລະ ຫົວລົດລາກ",
+  "ລົດຂົນສົ່ງເກີນ 13 ລໍ້",
+  "ລົດຂົນສົ່ງ",
+  "2024",
+  "2025",
+];
+
+const valuess = [5, 4, 3, 7, 6];
+
+const iconss = [
+  "/icons/ldb-logo.png",
+  "/icons/ldb-logo.png",
+  "/icons/ldb-logo.png",
+  "/icons/ldb-logo.png",
+  "/icons/ldb-logo.png",
+];
 
 const { locale } = useI18n();
 const fontFamilies = {
- la: "Saysettha OT, sans-serif",
+  la: "Saysettha OT, sans-serif",
   zh: "Saysettha OT, sans-serif",
   en: "Saysettha OT, sans-serif",
   vi: "Saysettha OT, sans-serif",
 };
 // Function to generate chart car fee
-const getChartOption = (itemData) => {
-  console.log("itemData============", itemData);
+// const getChartOption = (itemData) => {
+//   console.log("itemData============", itemData);
 
-  const values = itemData.map((i) => i.amt).reverse();
-  const labels = itemData.map((i) => i.descriptionName).reverse();
+//   const values = itemData.map((i) => i.amt).reverse();
+//   const labels = itemData.map((i) => i.descriptionName).reverse();
 
-  const colors = itemData.map((i) => i.color).reverse();
-  const icons = itemData.map((i) => i.imagePath).reverse();
+//   const colors = itemData.map((i) => i.color).reverse();
+//   const icons = itemData.map((i) => i.imagePath).reverse();
 
-  console.log("labels============", labels);
+//   console.log("labels============", labels);
 
-  return {
-    grid: { left: 270, right: 0, top: 50, bottom: 50 },
-    tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-    xAxis: {
-      type: "value",
-    },
-    yAxis: {
-      type: "category",
-      data: labels,
-      axisLabel: {
-        fontSize: 15,
-        color: "#333",
-        fontWeight: "bold",
-        fontFamily: fontFamilies[locale.value] || fontFamilies.en,
-      },
-    },
-    series: [
-      {
-        type: "pictorialBar",
-        symbolPosition: "end",
-        symbolSize: [40, 40],
-        symbolOffset: [40, 0],
-        data: icons.map((icon, i) => ({
-          value: values[i],
-          symbol: `image://${icon}`,
-        })),
-      },
-      {
-        name: "ຈຳນວນ",
-        type: "bar",
-        // data: values,
-        data: values.map((icon, i) => ({
-          value: values[i] == 0 ? "" : values[i],
-        })),
-        label: {
-          show: true,
-          position: "top",
-          color: "#333",
-          fontWeight: "bold",
-          formatter: "{c}",
-        },
-        barWidth: 15,
-        itemStyle: {
-          color: (params) => {
-            return colors[params.dataIndex % colors.length];
-          },
-        },
-      },
-    ],
-  };
-};
+//   return {
+//     grid: { left: 270, right: 50, top: 50, bottom: 50 },
+//     tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+//     xAxis: {
+//       type: "value",
+//     },
+//     yAxis: {
+//       type: "category",
+//       data: labels,
+//       axisLabel: {
+//         fontSize: 15,
+//         color: "#333",
+//         fontWeight: "bold",
+//         fontFamily: fontFamilies[locale.value] || fontFamilies.en,
+//       },
+//     },
+//     series: [
+//       {
+//         type: "pictorialBar",
+//         symbolPosition: "end",
+//         symbolSize: [40, 40],
+//         symbolOffset: [40, 0],
+//         data: icons.map((icon, i) => ({
+//           value: values[i],
+//           symbol: `image://${icon}`,
+//           symbolSize: [30, 30],
+//         })),
+//       },
+//       {
+//         name: "ຈຳນວນ",
+//         type: "bar",
+//         // data: values,
+//         data: values.map((icon, i) => ({
+//           value: values[i] == 0 ? "" : values[i],
+//         })),
+//         label: {
+//           show: true,
+//           position: "top",
+//           color: "#333",
+//           fontWeight: "bold",
+//           formatter: "{c}",
+//         },
+//         barWidth: 10,
+//         itemStyle: {
+//           color: (params) => {
+//             return colors[params.dataIndex % colors.length];
+//           },
+//         },
+//       },
+//     ],
+//   };
+// };
 
 // Dynamic array of data items
 // chart for visa fee===================================================
 
-const getChartOptions = (chartsData) => {
-  console.log("===============chartsData:", chartsData);
+// const getChartOptions = (chartsData) => {
+//   console.log("===============chartsData:", chartsData);
 
-  // Example: amount in $
-  const visibleData = chartsData.map((chartsData) => ({
-    value: chartsData.amt,
-    name: `ຈ່າຍ ${chartsData.amount} $ : ${chartsData.amt} ຄົນ`,
-    itemStyle: { color: chartsData.color },
-  }));
-  // Total of values for invisible slice
-  const totalValue = visibleData.reduce((sum, item) => sum + item.value, 0);
+//   // Example: amount in $
+//   const visibleData = chartsData.map((chartsData) => ({
+//     value: chartsData.amt,
+//     name: `ຈ່າຍ ${chartsData.amount} $ : ${chartsData.amt} ຄົນ`,
+//     itemStyle: { color: chartsData.color },
+//   }));
+//   // Total of values for invisible slice
+//   const totalValue = visibleData.reduce((sum, item) => sum + item.value, 0);
 
-  const data = [
-    ...visibleData,
-    {
-      value: totalValue, // invisible slice to make semicircle
-      name: "",
-      itemStyle: { color: "transparent" },
-      tooltip: { show: false },
-      label: { show: false },
-    },
-  ];
-  return {
-    title: {
-      text: `ລວມ ${totalValue} ຄົນ`, // Center text
-      left: "50%",
-      top: "70%", // roughly center in the semicircle
-      textAlign: "center",
-      textStyle: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#333",
-        fontFamily: fontFamilies[locale.value] || fontFamilies.en,
-      },
-    },
+//   const data = [
+//     ...visibleData,
+//     {
+//       value: totalValue, // invisible slice to make semicircle
+//       name: "",
+//       itemStyle: { color: "transparent" },
+//       tooltip: { show: false },
+//       label: { show: false },
+//     },
+//   ];
+//   return {
+//     title: {
+//       text: `ລວມ ${totalValue} ຄົນ`, // Center text
+//       left: "50%",
+//       top: "70%", // roughly center in the semicircle
+//       textAlign: "center",
+//       textStyle: {
+//         fontSize: 18,
+//         fontWeight: "bold",
+//         color: "#333",
+//         fontFamily: fontFamilies[locale.value] || fontFamilies.en,
+//       },
+//     },
 
-    tooltip: {
-      trigger: "item",
-      formatter: "{b}: {c}",
-    },
-    series: [
-      {
-        type: "pie",
-        radius: ["60%", "120%"],
-        center: ["50%", "70%"],
-        startAngle: 180,
-        hoverOffset: 0,
-        data,
-        label: {
-          position: "inside",
-          formatter: "{b}",
-          color: "red",
-          fontSize: 14,
-          fontFamily: fontFamilies[locale.value] || fontFamilies.en,
-          // stroke settings
-          textBorderColor: "#fff", // stroke color (e.g., white border)
-          textBorderWidth: 2, // stroke thickness
-        },
-      },
-    ],
-  };
-};
+//     tooltip: {
+//       trigger: "item",
+//       formatter: "{b}: {c}",
+//     },
+//     series: [
+//       {
+//         type: "pie",
+//         radius: ["60%", "120%"],
+//         center: ["50%", "70%"],
+//         startAngle: 180,
+//         hoverOffset: 0,
+//         data,
+//         label: {
+//           position: "inside",
+//           formatter: "{b}",
+//           color: "red",
+//           fontSize: 14,
+//           fontFamily: fontFamilies[locale.value] || fontFamilies.en,
+//           // stroke settings
+//           textBorderColor: "#fff", // stroke color (e.g., white border)
+//           textBorderWidth: 2, // stroke thickness
+//         },
+//       },
+//     ],
+//   };
+// };
 // Function to download chart
-const downloadChart = (type = "png") => {
-  if (!chart) return;
-  const url = chart.getDataURL({
-    type, // 'png', 'jpeg', or 'svg'
-    pixelRatio: 2,
-    backgroundColor: "#fff",
-  });
+// const downloadChart = (type = "png") => {
+//   if (!chart) return;
+//   const url = chart.getDataURL({
+//     type, // 'png', 'jpeg', or 'svg'
+//     pixelRatio: 2,
+//     backgroundColor: "#fff",
+//   });
 
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `chart.${type}`;
-  link.click();
-};
-
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.download = `chart.${type}`;
+//   link.click();
+// };
 
 // function get data
 const getData = async () => {

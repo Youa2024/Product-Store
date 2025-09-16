@@ -1,363 +1,199 @@
 <template>
-  <client-only>
-    <v-container fluid>
-      <v-card>
-        <v-card-text class="overflow-x-auto" id="print-section">
-          <div ref="tableRef">
-            <table class="corner-borders-table min-w-[1000px] border">
-              <thead>
-                <tr>
-                  <th rowspan="3" class="text-center">ລ/ດ</th>
-                  <th rowspan="3" class="text-center">ດ່ານຊາຍແດນ</th>
-                  <th rowspan="3" class="text-center">ແຂວງ</th>
+  <div class="map-wrap">
+    <img
+      src="/assets/images/laos.png"
+      alt="Map"
+      :class="[
+        'transition-transform duration-500',
+        zoomed ? 'scale-150' : 'scale-100',
+      ]"
+    />
 
-                  <th colspan="17" class="text-center">21/20/2025</th>
-                </tr>
-                <tr>
-                  <th colspan="3" class="text-center">
-                    ຂະແໜງພາສີ (ບ 53, ພາຫະນະ)
-                  </th>
-                  <th colspan="3" class="text-center">
-                    ຂະແໜງອາກອນ (Visa on Arrival)
-                  </th>
-                  <th colspan="2" class="text-center">
-                    ຂະແໜງໂຍທາ (ຄ່າຂ້າມຂົວ)
-                  </th>
-                  <th colspan="2" class="text-center">
-                    ຂະແໜງທ່ອງທ່ຽວ (ກອງທຶນທ່ອງທ່ຽວ)
-                  </th>
-                  <th colspan="2" class="text-center">
-                    ຂະແໜງ ຕມ (ປື້ມຜ່ານແດນ)
-                  </th>
-                  <th colspan="2" class="text-center">
-                    ຂະແໜງກະຊິກຳ (ກັກກັນພຶດ)
-                  </th>
-                  <th colspan="2" class="text-center">
-                    ຂະແໜງສາທາ (ອາຫານ ແລະ ຢາ)
-                  </th>
-                </tr>
-                <tr>
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ</th>
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ</th>
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ (LAK)</th>
-                  <th>ຈຳນວນເງິນ (USD)</th>
+    <!-- Marker 1 -->
+    <div
+      class="marker"
+      style="left: 40%; top: 35%"
+      tabindex="0"
+      @click="click()"
+    >
+      <div class="pin"><span class="num">1</span></div>
+      <div class="tooltip">Marker 1</div>
+    </div>
 
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ</th>
+    <!-- Marker 2 -->
+    <div class="marker" style="left: 30%; top: 20%" tabindex="0">
+      <div class="pin"><span class="num">2</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+    <!-- Marker 3 -->
+    <div class="marker" style="left: 20%; top: 25%" tabindex="0">
+      <div class="pin"><span class="num">3</span></div>
+      <div class="tooltip">
+        Marker 3 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
 
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ</th>
+    <!-- Marker 4 -->
+    <div class="marker" style="left: 10%; top: 30%" tabindex="0">
+      <div class="pin"><span class="num">4</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
 
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ</th>
+    <!-- Marker 5 -->
+    <div class="marker" style="left: 25%; top: 35%" tabindex="0">
+      <div class="pin"><span class="num">5</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
 
-                  <th>ຈຳນວນຄົນ</th>
-                  <th>ຈຳນວນເງິນ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in items">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.nameGb }}</td>
-                  <td>{{ item.customAmount }}</td>
-                  <td>{{ item.customTotal }}</td>
-                  <td>{{ item.visaAmount }}</td>
-                  <td>{{ item.visaTotal }}</td>
-                  <td>{{ item.visaUsdTotal }}</td>
-                  <td>{{ item.bridgeAmount }}</td>
-                  <td>{{ item.bridgeTotal }}</td>
-                  <td>{{ item.tourismAmount }}</td>
-                  <td>{{ item.tourismTotal }}</td>
-                  <td>{{ item.immigrationAmount }}</td>
-                  <td>{{ item.immigrationTotal }}</td>
-                  <td>{{ item.agricultureAmount }}</td>
-                  <td>{{ item.agricultureTotal }}</td>
-                  <td>{{ item.publicHealthAmount }}</td>
-                  <td>{{ item.publicHealthTotal }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </v-card-text>
-        <v-card-actions>
-          <client-only>
-            <v-btn @click="printTable()">download pdf</v-btn>
-            <v-btn @click="handleExport()">download excel</v-btn></client-only
-          >
-        </v-card-actions>
-      </v-card>
-    </v-container></client-only
-  >
+    <!-- Marker 6 -->
+    <div class="marker" style="left: 35%; top: 28%" tabindex="0">
+      <div class="pin"><span class="num">6</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 7 -->
+    <div class="marker" style="left: 50%; top: 30%" tabindex="0">
+      <div class="pin"><span class="num">7</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 8 -->
+    <div class="marker" style="left: 25%; top: 45%" tabindex="0">
+      <div class="pin"><span class="num">8</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 9 -->
+    <div class="marker" style="left: 40%; top: 45%" tabindex="0">
+      <div class="pin"><span class="num">9</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 10 -->
+    <div class="marker" style="left: 60%; top: 45%" tabindex="0">
+      <div class="pin"><span class="num">10</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 11 -->
+    <div class="marker" style="left: 63%; top: 53%" tabindex="0">
+      <div class="pin"><span class="num">11</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 12 -->
+    <div class="marker" style="left: 79%; top: 58%" tabindex="0">
+      <div class="pin"><span class="num">12</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 13 -->
+    <div class="marker" style="left: 73%; top: 68%" tabindex="0">
+      <div class="pin"><span class="num">13</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+    <!-- Marker 14 -->
+    <div class="marker" style="left: 88%; top: 67%" tabindex="0">
+      <div class="pin"><span class="num">14</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 15 -->
+    <div class="marker" style="left: 88%; top: 75%" tabindex="0">
+      <div class="pin"><span class="num">15</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+
+    <!-- Marker 16 -->
+    <div class="marker" style="left: 75%; top: 80%" tabindex="0">
+      <div class="pin"><span class="num">16</span></div>
+      <div class="tooltip">
+        Marker 2 virtual:nuxt:D%3A%2FLDBBORDER%2FLDB-BORDER%2F.nuxt%2Froutes.mjs
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, nextTick } from "vue";
-
-import * as XLSX from "xlsx";
-import { useExcelExport } from "../composables/useExcelExport";
-// const exportToExcel = () => {
-//   const table = document.getElementById('print-section')
-//   if (!table) return
-
-//   // Convert HTML table to worksheet
-//   const worksheet = XLSX.utils.table_to_sheet(table)
-
-//   // Create a new workbook and append the worksheet
-//   const workbook = XLSX.utils.book_new()
-//   XLSX.utils.book_append_sheet(workbook, worksheet, 'Report')
-
-//   // Trigger download
-//   XLSX.writeFile(workbook, 'Border-Transaction-Report.xlsx')
-// }
-const { exportBorderRevenue } = useExcelExport();
-const rows = [
-  [
-    "1",
-    "ດ່ານໜຶ່ງ",
-    "ຫົວພັນ",
-    1000,
-    5000000,
-    500,
-    2000000,
-    100,
-    200,
-    1500000,
-    300,
-    1200000,
-    50,
-    500000,
-    80,
-    700000,
-    60,
-    300000,
-  ],
-];
-const handleExport = () => {
-  exportBorderRevenue(rows);
+const click = () => {
+  console.log("============huaphan");
 };
+import { ref } from "vue";
 
-const tableRef = (ref < HTMLElement) | (null > null);
+const zoomed = ref(false);
 
-const printTable = async () => {
-  await nextTick();
-
-  if (!tableRef.value) {
-    console.error("Table element not found!");
-    return;
-  }
-
-  const printContents = tableRef.value.innerHTML;
-  const originalContents = document.body.innerHTML;
-
-  document.body.innerHTML = printContents;
-  window.print();
-  document.body.innerHTML = originalContents;
-  location.reload();
+const toggleZoom = () => {
+  zoomed.value = !zoomed.value;
 };
-const headers = []; // we override header slot, so leave empty
-
-const items = [
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-  {
-    id: 1,
-    border: "ດ່ານຊາຍແດນ ສະຫວັນນະເຂດ II",
-    province: "ສະຫວັນນະເຂດ",
-    reg_people: 970128,
-    reg_money: 81415749300,
-    voa_people: 3456,
-    voa_lak: 867248680,
-    voa_usd: 34720,
-    stay_people: 258403,
-    stay_money: 2584030000,
-    other_people: 451379,
-    other_money: 3848128000,
-    pass_people: 0,
-    pass_money: 0,
-    temp_people: 0,
-    temp_money: 0,
-    foreign_people: 0,
-    foreign_money: 0,
-  },
-];
 </script>
 
-<!-- pages/border-report.vue -->
-
 <style scoped>
-table,
-td,
-th {
-  border: 1px solid;
+.map-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+.map-wrap img {
+  width: 100%;
+  height: auto;
+}
+.marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  z-index: 20;
+}
+.marker .pin {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: url("/assets/images/ldb-logo.png") no-repeat center center; /* logo */
+  background-size: cover; /* make logo fit */
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
-table {
-  border-collapse: collapse;
+.marker .tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(245, 241, 241, 0.8);
+  color: rgb(20, 19, 19);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
-th,
-td {
-  padding: 5px;
-  text-align: center;
-}
-thead {
-  background-color: #b3d9ff; /* light blue */
-  /* text color */
-}
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #print-section,
-  #print-section * {
-    visibility: visible;
-  }
-  #print-section {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
+.marker:hover .tooltip {
+  opacity: 1;
 }
 </style>

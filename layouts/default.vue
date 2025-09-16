@@ -109,6 +109,7 @@ console.log("user data first============:",userData.value);
     if (process.client) {
       const stored = localStorage.getItem("userData");
       userData.value = stored ? JSON.parse(stored) : null;
+      user.value = stored ? localStorage.getItem("user") : null;
       console.log("user data list============:",userData.value);
     }
   }
