@@ -14,8 +14,8 @@ RUN npm install
 COPY . .
 
 # Increase file watchers to avoid ENOSPC errors
-RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf \
-    && sysctl -p
+#RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf \
+ #   && sysctl -p
 
 # Env variables
 ENV CHOKIDAR_USEPOLLING=true
