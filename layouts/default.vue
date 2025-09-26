@@ -28,7 +28,7 @@
           @click="handleLogout"
         ></Mbtn>
       </VAppBar>
-      <VNavigationDrawer
+      <!-- <VNavigationDrawer
         :image="logo"
         theme="dark"
         permanent
@@ -68,7 +68,7 @@
             </v-list-group>
           </v-list>
         </div>
-      </VNavigationDrawer>
+      </VNavigationDrawer> -->
       <VMain class="d-flex" style="min-height: 100vh">
         <!-- <NuxtPage /> -->
         <slot />

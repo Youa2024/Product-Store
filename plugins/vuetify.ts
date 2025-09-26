@@ -18,7 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         myCustomTheme: {
           dark: false,
           colors: {
-            primary: colors.blue.darken2,
+            primary: colors.green.darken3,
             accent: colors.grey.darken3,
             secondary: colors.amber.darken3,
             info: colors.teal.lighten1,
@@ -26,6 +26,15 @@ export default defineNuxtPlugin((nuxtApp) => {
             error: colors.deepOrange.accent4,
             success: colors.green.accent3,
           },
+          //   colors: {
+          //   primary: colors.green.darken3,
+          //   accent: colors.grey.darken3,
+          //   secondary: colors.amber.darken3,
+          //   info: colors.teal.lighten1,
+          //   warning: colors.amber.base,
+          //   error: colors.deepOrange.accent4,
+          //   success: colors.green.accent3,
+          // },
         },
       },
     },

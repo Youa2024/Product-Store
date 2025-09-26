@@ -56,6 +56,7 @@
         ></v-row>
       </v-col>
     </v-row>
+
     <MLoading v-model="loading"></MLoading>
   </div>
 </template>
@@ -114,10 +115,12 @@ const checkRemember = () => {
 };
 const handleLogin = async () => {
   loading.value = true;
+  navigateTo("/home");
+  // loading.value = false;
   try {
-    await login(user.value, password.value, locale.value).then(() => {});
-    loading.value = false;
-    await navigateTo("/home");
+    // await login(user.value, password.value, locale.value).then(() => {});
+    // await navigateTo("/home");
+    // const router = useRouter();
   } catch (e) {
     console.log("error==================", e);
   }

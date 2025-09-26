@@ -9,8 +9,8 @@
     v-bind="$attrs"
     :variant="variant"
     :rounded="rounded"
-    :prepend-icon="prependIcon"
     :append-icon="appendIcon"
+    :append-inner-icon="prependIcon"
   />
 </template>
 
@@ -55,7 +55,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
 
 const emit = defineEmits(["update:modelValue"]);
 
