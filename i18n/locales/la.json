@@ -34,9 +34,20 @@
   "product_image_unit": "ຮູບພາບຜະລິດຕະພັນ / ຫນ່ວຍ",
   "product_image_package": "ຮູບພາບຜະລິດຕະພັນ / ແກັດ",
   "product_info": "ຂໍ້ມູນສິນຄ້າ",
-  "actions": "ຂໍ້ມູນສິນຄ້າ",
   "search": "ຄົ້ນຫາ",
   "price_unit": "ລາຄາ / ຫນ່ວຍ",
-   "price_package": "ລາຄາ/ ແກັດ",
-   "price": "ລາຄາ"
+  "price_package": "ລາຄາ/ ແກັດ",
+  "price": "ລາຄາ",
+  "actions": "ຈັດການ",
+   "btn_approve": "ອະນຸມັດ",
+   "btn_cancel": "ຍົກເລີກ",
+   "btn_view": "ເບິ່ງລາຍລະອຽດ",
+   "bill_id": "ລະຫັດໃບບິນ",
+   "order_store_name": "ຮ້ານສັ່ງຊື້",
+   "order_atm": "ຈໍານວນລາຍການ",
+   "amount": "ຈໍານວນເງິນ",
+   "total": "ຈໍານວນເງິນທັງໝົດ",
+   "btn_close": "ປິດ",
+   "date": "ວັນທີ",
+   "supplier_store": "ຊື່ຮ້ານຜູ້ສະຫນອງ"
 }

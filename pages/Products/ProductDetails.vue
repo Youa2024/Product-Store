@@ -122,11 +122,11 @@
               <v-divider></v-divider>
               <v-row
                 ><v-col cols="3">
-                  <div style="width: 120px; padding: 10px">
+                  <div style="width: 120px; padding: 5px">
                     <v-text-field
                       prepend-inner-icon="mdi-minus"
                       append-inner-icon="mdi-plus"
-                      @click:prepend-inner="count()"
+                      @click:prepend-inner="decrease()"
                       @click:append-inner="count()"
                       id="id"
                       rounded="xl"
@@ -158,8 +158,17 @@ const selectedItem = () => {
   console.log("=============item============:", select.value);
 };
 const count = () => {
-  if(counter.value==0){
-    counter.value=+1
+  // if (counter.value == 0) {
+    counter.value++;
+    console.log("=============item============:", counter.value);
+  // }
+};
+const decrease = () => {
+  if (counter.value >= 1) {
+    counter.value--;
+    console.log("=============item============:", counter.value);
+  }else{
+    counter.value=0;
   }
 };
 </script>

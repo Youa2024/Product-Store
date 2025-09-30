@@ -37,5 +37,18 @@
    "search": "Search",
    "price_unit": "Price/ unit",
    "price_package": "Price/ package",
-   "price": "Price"
+   "price": "Price",
+   "actions": "actions",
+   "btn_approve": "Approve",
+   "btn_cancel": "Cancel",
+   "btn_view": "View Details",
+   "bill_id": "Bill ID",
+   "order_store_name": "store Order name",
+   "order_atm": "Order amount",
+   "amount": "Amount",
+   "total": "Total",
+   "btn_close": "Close",
+   "date": "Date",
+   "supplier_store": "Supplier Store Name"
+
 }
