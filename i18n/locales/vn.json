@@ -49,5 +49,9 @@
    "total": "tổng cộng",
    "btn_close": "Đóng",
    "date": "ngày",
-   "supplier_store": "Tên cửa hàng của nhà cung cấp"
+   "supplier_store": "Tên cửa hàng của nhà cung cấp",
+   "lak": "LAK",
+   "thb": "THB",
+   "usd": "USD",
+   "crate_date": "Tạo Ngày"
 }

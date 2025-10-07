@@ -49,6 +49,10 @@
    "total": "Total",
    "btn_close": "Close",
    "date": "Date",
-   "supplier_store": "Supplier Store Name"
+   "supplier_store": "Supplier Store Name",
+   "lak": "LAK",
+   "thb": "THB",
+   "usd": "USD",
+   "crate_date": "Create Date"
 
 }

@@ -15,7 +15,7 @@
               <v-progress-circular indeterminate color="primary" />
             </v-col>
             <v-col cols="6">
-              <h3 class="lao-font pt-2">Loading...</h3>
+              <h3 class="lao-font pt-2">Processing...</h3>
             </v-col>
           </v-row>
         </v-card-text>
