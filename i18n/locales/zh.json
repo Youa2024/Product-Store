@@ -53,5 +53,9 @@
   "lak": "LAK",
   "thb": "THB",
   "usd": "USD",
-  "crate_date": "创建日期"
+  "crate_date": "创建日期",
+  "btn_edit": "编辑",
+  "btn_delete": "删除",
+  "crate_edit": "日期 编辑",
+  "change_image": "更改图像"
 }

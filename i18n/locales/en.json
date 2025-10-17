@@ -53,6 +53,10 @@
    "lak": "LAK",
    "thb": "THB",
    "usd": "USD",
-   "crate_date": "Create Date"
+   "crate_date": "Create Date",
+  "btn_edit": "Edit",
+  "btn_delete": "Delete",
+  "crate_edit": "Date Edit",
+  "change_image": "Change Image"
 
 }

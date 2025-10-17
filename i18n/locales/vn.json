@@ -53,5 +53,9 @@
    "lak": "LAK",
    "thb": "THB",
    "usd": "USD",
-   "crate_date": "Tạo Ngày"
+   "crate_date": "Tạo Ngày",
+  "btn_edit": "Biên tập",
+  "btn_delete": "Xóa bỏ",
+  "crate_edit": "Ngày Chỉnh sửa",
+  "change_image": "Thay đổi hình ảnh"
 }

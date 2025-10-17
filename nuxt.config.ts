@@ -88,11 +88,10 @@ export default defineNuxtConfig({
           ? "http://10.0.10.49:9999/borderapi-prod/api/v1/"
           : "http://10.0.10.49:9999/borderapi-prod/api/v1/",
       googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-       apiBaseMain:
+      apiBaseMain:
         process.env.NODE_ENV === "production"
           ? "http://10.0.10.11:3333/api/dev/service/"
           : "http://10.0.10.11:3333/api/dev/service/",
-      
     },
   },
 });
