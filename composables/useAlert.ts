@@ -35,14 +35,13 @@ export const useAlert = () => {
       heightAuto: false,
       customClass: {
         confirmButton: "my-confirm-button",
-       
       },
     });
   };
-  const showConfirm = (message: string) => {
+  const showConfirm = (message: string, onConfirm: () => void) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This action can't be undone.",
+      text: message,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -57,6 +56,8 @@ export const useAlert = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // perform action
+        console.log("===========confirm");
+        onConfirm();
       }
     });
   };

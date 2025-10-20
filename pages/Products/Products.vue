@@ -27,26 +27,28 @@
                   :item-title="itemTitle"
                   return-object
                 ></v-select>
-                <div class="d-flex"  v-if="unitUrl != ''">   <v-card
-                  class="ma-3"
-                  width="150px"
-                  height="150px"
-                  elevation="1"
-                  variant="outlined"
-                  :style="{
-                    backgroundImage: `url(${unitUrl})`,
-                    backgroundSize: 'cover',
-                  }"
-                 
-                > 
-                </v-card><v-btn
+                <div class="d-flex" v-if="unitUrl != ''">
+                  <v-card
+                    class="ma-3"
+                    width="150px"
+                    height="150px"
+                    elevation="1"
+                    variant="outlined"
+                    :style="{
+                      backgroundImage: `url(${unitUrl})`,
+                      backgroundSize: 'cover',
+                    }"
+                  >
+                  </v-card
+                  ><v-btn
                     variant="outlined"
                     color="primary"
                     rounded="xl"
                     @click="changeImage('unitUrl')"
                     >{{ $t("change_image") }}</v-btn
-                  ></div>
-             
+                  >
+                </div>
+
                 <v-file-input
                   v-else
                   :label="$t('product_image_unit')"
@@ -68,15 +70,14 @@
                       backgroundSize: 'cover',
                     }"
                   >
-                  
                   </v-card>
                   <v-btn
-                      color="primary"
-                      variant="outlined"
-                      rounded="xl"
-                      @click="changeImage('packgeUrl')"
-                      >{{ $t("change_image") }}</v-btn
-                    >
+                    color="primary"
+                    variant="outlined"
+                    rounded="xl"
+                    @click="changeImage('packgeUrl')"
+                    >{{ $t("change_image") }}</v-btn
+                  >
                 </div>
 
                 <v-file-input
@@ -151,6 +152,14 @@
                 <v-btn color="grey" rounded="xl" @click="SelectItem(item)"
                   ><v-icon>mdi-pen</v-icon>{{ $t("btn_edit") }}</v-btn
                 >
+                <v-btn
+                  color="red"
+                  class="ml-3"
+                  rounded="xl"
+                  @click="confirmDelete(item)"
+                  ><v-icon>mdi-delete-circle</v-icon
+                  >{{ $t("btn_delete") }}</v-btn
+                >
               </div>
             </template>
           </v-data-table>
@@ -185,7 +194,7 @@ const typeObject = ref({});
 const headers = ref([
   { title: "#", key: "id", align: "start" },
   { title: t("product_name"), key: "productName", align: "start" },
-  { title: t("product_type"), key: "productTypeId", align: "center" },
+  { title: t("product_type"), key: "productType", align: "center" },
   { title: t("product_image_unit"), key: "fileUnitUrl", align: "center" },
   { title: t("product_image_package"), key: "filePackageUrl", align: "center" },
   { title: t("actions"), key: "actions", align: "end" },
@@ -201,6 +210,29 @@ onMounted(() => {
   getAllProductType();
   getAllProduct();
 });
+//delete product
+const confirmDelete = (item) => {
+  showConfirm("Do you want to delete this item!", () => {
+    DeleteProduct(item);
+  });
+};
+const DeleteProduct = async (item) => {
+  console.log("item=============", item);
+
+  // loading.value = true;
+  var body = { id: item.id };
+  const res = await mainApi.post("/deleteProduct", body);
+  if (res.data.status == "00") {
+    loading.value = false;
+    showSuccess(res.data.message);
+    getAllProduct();
+    clearData();
+    // allProduct.value = res.data.dataRes;
+  } else {
+    loading.value = false;
+    showError(res.data.message);
+  }
+};
 // update product
 const updateProduct = async () => {
   console.log("============product id ===============:", productTypes.value.id);
@@ -241,7 +273,7 @@ const changeImage = (value) => {
   }
 };
 const SelectItem = (item) => {
-   console.log("err==================", item);
+  console.log("err==================", item);
   productId.value = item.id;
   // productTypes.value = item.productTypeId;
   product_name.value = item.productName;
@@ -251,10 +283,10 @@ const SelectItem = (item) => {
     id: item.productTypeId,
   };
 
-  unitUrl.value = item.fileUnitUrl==null?'':item.fileUnitUrl;
-  packgeUrl.value = item.filePackageUrl==null?'':item.filePackageUrl;
-  filePackageName.value=item.filePackageName;
-  fileUnitName.value=item.fileUnitName
+  unitUrl.value = item.fileUnitUrl == null ? "" : item.fileUnitUrl;
+  packgeUrl.value = item.filePackageUrl == null ? "" : item.filePackageUrl;
+  filePackageName.value = item.filePackageName;
+  fileUnitName.value = item.fileUnitName;
 };
 const clearData = () => {
   productTypes.value = "";
@@ -278,7 +310,7 @@ const insertProduct = async () => {
   if (valid) {
     console.log("form is valid");
     const formData = new FormData();
-    formData.append("ProductTypeId", productTypes.value);
+    formData.append("ProductTypeId", productTypes.value.id);
     formData.append("ProName", product_name.value);
     formData.append("unitFile", unitFile.value);
     formData.append("packageFile", packageFile.value);
@@ -318,19 +350,6 @@ const getAllProductType = async () => {
   }
 };
 // table header
-
-const companies_list = [
-  {
-    groupId: "Ford Mustang",
-    comName: 450,
-    comType: "Gasoline",
-    province: "USA",
-    district: 55000,
-    village: "Gasoline",
-    phone: "USA",
-    branchAtm: 55000,
-  },
-];
 </script>
 
 <style lang="scss" scoped></style>
