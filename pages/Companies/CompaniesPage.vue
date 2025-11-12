@@ -8,7 +8,7 @@
               {{ $t("conpany_info") }}
             </v-card-title>
             <v-divider></v-divider>
-            <v-form @submit.prevent>
+            <v-form @submit.prevent v-model="isValid" ref="form">
               <v-card-text>
                 <v-row
                   ><v-col cols="6" md="6" sm="12"
@@ -18,6 +18,7 @@
                       prepend-inner-icon="mdi-account-group"
                       clearable
                       v-model="groupId"
+                      @input="groupId = groupId.toUpperCase()"
                       :rules="rules"
                     ></v-text-field>
                     <v-text-field
@@ -34,6 +35,7 @@
                       :label="$t('select_conpany_type')"
                       v-model="comType"
                       :rules="rules"
+                      :items="comTypeItem"
                     ></v-select>
                     <v-text-field
                       rounded="xl"
@@ -67,7 +69,7 @@
                       clearable
                       type="number"
                       v-model="phone"
-                      placeholder="20xxxx xxxx"
+                      placeholder="020 xxxx xxxx"
                       :rules="rules"
                     ></v-text-field>
                     <v-text-field
@@ -87,36 +89,50 @@
                   rounded="xl"
                   variant="outlined"
                   type="submit"
+                  @click="insert()"
                   ><v-icon class="mr-4">mdi-content-save-all</v-icon
                   >{{ $t("save") }}</v-btn
                 >
               </v-card-actions></v-form
             >
           </v-card>
-          <br>
+          <br />
           <v-card rounded="xl">
             <v-card-text>
               <v-data-table
                 :headers="headers"
-                :items="companies_list"
+                :items="allData"
                 hide-actions
                 class="elevation-1"
-               
                 pagination.sync="pagination"
                 item-key="id"
-                loading="true"
-                search="search"
+                :search="search"
               >
+                <template #item.id="{ index, item }">
+                  {{ index + 1 }}
+                </template>
+                <template #item.actions="{ item }">
+                  <div class="d-flex">
+                    <v-btn color="grey" rounded="xl" @click="SelectItem(item)"
+                      ><v-icon>mdi-pen</v-icon>{{ $t("btn_edit") }}</v-btn
+                    >
+                  </div>
+                </template>
               </v-data-table>
             </v-card-text>
-          </v-card> </v-card></v-col
-    ></v-row>
+          </v-card>
+        </v-card></v-col
+      ></v-row
+    >
+    // loading
+    <MLoading v-model="loading"></MLoading>
   </v-container>
   >
 </template>
 
 <script setup>
 import { ref } from "vue";
+const { mainApi } = useApi();
 const { t } = useI18n();
 const groupId = ref("");
 const comName = ref(null);
@@ -124,8 +140,13 @@ const comType = ref(null);
 const province = ref(null);
 const district = ref(null);
 const village = ref(null);
-const phone = ref(null);
+const phone = ref("020");
 const branchAtm = ref(null);
+const loading = ref(false);
+const isValid = ref(false);
+const form = ref(null);
+const allData = ref([]);
+const { showSuccess, showWarning, showError } = useAlert();
 // role for feild
 const rules = [
   (value) => {
@@ -133,12 +154,64 @@ const rules = [
     return t("rule");
   },
 ];
+const comTypeItem = ["ການຄ້າ", "ກະສິກໍາ", "ອຸດສາຫະກໍາ"];
+
+// method
+onMounted(() => {
+  getData();
+});
+const getData = async () => {
+  const res = await mainApi.get("getAllCompanies");
+  if (res.data.status == "00") {
+    allData.value = res.data.res;
+  } else {
+    showError(res.data.message);
+  }
+};
+
+const clearData = () => {
+  groupId.value = "";
+  comName.value = "";
+  comType.value = "";
+  province.value = "";
+  district.value = "";
+  village.value = "";
+  branchAtm.value = "";
+  phone.value = "";
+};
+const insert = async () => {
+  const { valid } = await form.value.validate();
+  if (valid) {
+    loading.value = true;
+    const body = {
+      companyId: groupId.value,
+      companyName: comName.value,
+      comType: comType.value,
+      province: province.value,
+      District: district.value,
+      village: village.value,
+      branchAtm: branchAtm.value,
+      phone: phone.value,
+    };
+    console.log("body============", body);
+
+    const res = await mainApi.post("insertCompany", body);
+    if (res.data.status == "00") {
+      loading.value = false;
+      showSuccess(res.data.message);
+      clearData();
+    }
+  } else {
+    showWarning("Please insert require feild");
+  }
+};
+
 // table header
 
 const headers = ref([
-  { title: "#", key: "grounId", align: "start" },
-   { title: t("conpany_Id"), key: "grounId", align: "start" },
-  { title: t("conpany_name"), key: "comName", align: "end" },
+  { title: "#", key: "companyId", align: "start" },
+  { title: t("conpany_Id"), key: "grounId", align: "start" },
+  { title: t("conpany_name"), key: "companyName", align: "start" },
   { title: t("select_conpany_type"), key: "comType", align: "start" },
   { title: t("province"), key: "province", align: "start" },
   { title: t("district"), key: "district", align: "end" },

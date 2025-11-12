@@ -8,8 +8,17 @@
         <v-divider></v-divider>
         <v-form @submit.prevent ref="form" v-model="isValid">
           <v-card-text>
-            <v-row justify="center" align="center"
+            <v-row justify="center" align="start"
               ><v-col cols="12" md="6" sm="6">
+                <v-btn
+                  color="primary"
+                  rounded="xl"
+                  @click="dialogAddType = true"
+                  ><v-icon>mdi-plus</v-icon>{{ $t("add")
+                  }}{{ $t("product_type") }}</v-btn
+                >
+                <br />
+                <br />
                 <v-text-field
                   rounded="xl"
                   :label="$t('product_name')"
@@ -19,14 +28,17 @@
                 ></v-text-field>
                 <v-select
                   rounded
-                  :items="productItems"
+                  :items="filteredItems"
                   variant="outlined"
                   :label="$t('select') + $t('product_type')"
                   v-model="productTypes"
                   :rules="rules"
                   :item-title="itemTitle"
+                  @update:search="onSearch"
+                  clearable
                   return-object
                 ></v-select>
+
                 <div class="d-flex" v-if="unitUrl != ''">
                   <v-card
                     class="ma-3"
@@ -167,11 +179,66 @@
       </v-card>
     </v-card>
     <MLoading v-model="loading"></MLoading>
+    <v-dialog
+      v-model="dialogAddType"
+      scrollable
+      persistent
+      :overlay="false"
+      max-width="500px"
+      transition="dialog-transition"
+    >
+      <v-card rounded="xl">
+        <v-card-title primary-title class="d-flex justify-center">
+          {{ $t("product_type") }}
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-form @submit.prevent v-model="isValid" ref="form">
+          <v-card-text>
+            <v-row justify="center" align="center"
+              ><v-col cols="12" md="6" sm="6">
+                <v-text-field
+                  rounded="xl"
+                  :label="$t('product_type')"
+                  prepend-inner-icon="mdi-format-list-bulleted-type"
+                  clearable
+                  @click:clear="onClear"
+                  v-model="product_type"
+                  :rules="rules"
+                ></v-text-field> </v-col
+            ></v-row>
+          </v-card-text>
+          <v-card-actions>
+            <v-row justify="center" align="center"
+              ><v-col cols="12" md="6" sm="6">
+                <v-btn
+                  color="primary"
+                  rounded="xl"
+                  variant="outlined"
+                  type="submit"
+                  block
+                  @click="insertProductType()"
+                  ><v-icon class="mr-4">mdi-content-save-all</v-icon
+                  >{{ id != null ? $t("btn_edit") : $t("save") }}</v-btn
+                ></v-col
+              ></v-row
+            >
+            <br /><br /> </v-card-actions
+        ></v-form>
+        <v-card-actions>
+          <v-btn
+            color="grey"
+            @click="dialogAddType = false"
+            variant="outlined"
+            >{{ $t("btn_close") }}</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 const { t } = useI18n();
 const product_name = ref("");
 const productItems = ref([]);
@@ -190,7 +257,9 @@ const productId = ref("");
 const itemTitle = ref("productType");
 const filePackageName = ref("");
 const fileUnitName = ref("");
-const typeObject = ref({});
+const dialogAddType = ref(false);
+const product_type = ref("");
+const search = ref("");
 const headers = ref([
   { title: "#", key: "id", align: "start" },
   { title: t("product_name"), key: "productName", align: "start" },
@@ -210,6 +279,39 @@ onMounted(() => {
   getAllProductType();
   getAllProduct();
 });
+
+// When user types
+const onSearch = (val) => {
+  search.value = val;
+};
+// Filter items dynamically
+const filteredItems = computed(() => {
+  if (!search.value) return productItems.value;
+  return productItems.value.filter((item) => {
+    console.log("item", item.productType);
+    console.log("item", search.value);
+    item.productType.toLowerCase().includes(search.value.toLowerCase());
+  });
+});
+// add product type
+const insertProductType = async () => {
+  if (product_type != "") {
+    loading.value = true;
+    const body = {
+      productType: product_type.value,
+    };
+    const res = await mainApi.post("insertProductType", body);
+    if (res.data.status == "00") {
+      showSuccess(res.data.message);
+      product_type.value = "";
+      dialogAddType.value = false;
+      loading.value = false;
+      getAllProductType();
+    }
+  } else {
+    showWarning("Please insert require feild");
+  }
+};
 //delete product
 const confirmDelete = (item) => {
   showConfirm("Do you want to delete this item!", () => {

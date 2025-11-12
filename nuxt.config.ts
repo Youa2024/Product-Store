@@ -4,6 +4,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  nitro: {
+    devProxy: {
+      "/api": {
+        target: "http://localhost:8080", // your backend
+        changeOrigin: true,
+      },
+    },
+  },
+
   imports: {
     // Auto-import is enabled by default, but you can configure it
     autoImport: true,
@@ -20,12 +29,12 @@ export default defineNuxtConfig({
     "@/assets/css/main.css",
     "@mdi/font/css/materialdesignicons.css",
     "~/assets/css/fonts.css",
-    "@/assets/css/tailwind.css",
+
     "leaflet/dist/leaflet.css",
   ],
   postcss: {
     plugins: {
-      "@tailwindcss/postcss": {}, // ✅ use this instead of tailwindcss: {}
+      tailwindcss: {},
       autoprefixer: {},
     },
   },

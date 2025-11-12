@@ -4,7 +4,7 @@ interface User {
   username: string;
 }
 
-export const useUserSession = () => {
+export const useMyUserSession = () => {
   const cookie = useCookie<User | null>("user", { default: () => null });
 
   const user = useState<User | null>("user", () => cookie.value);
