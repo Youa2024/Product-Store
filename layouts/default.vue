@@ -102,15 +102,13 @@ onMounted(() => {
     console.log("==================locale.value=============:", locale.value);
   }
   // check data or list menu===================
-console.log("user data first============:",userData.value);
+  console.log("user data first============:", userData.value);
   if (userData.value == null) {
-    
-    
     if (process.client) {
       const stored = localStorage.getItem("userData");
       userData.value = stored ? JSON.parse(stored) : null;
       user.value = stored ? localStorage.getItem("user") : null;
-      console.log("user data list============:",userData.value);
+      console.log("user data list============:", userData.value);
     }
   }
 });
@@ -161,9 +159,10 @@ useHead({
 </script>
 <style scoped>
 .app-bar-image {
-  background-image: url("@/public/bg_login_biz.png");
-  background-size: cover;
-  background-position: center;
+
+  background: radial-gradient(ellipse at center, #7e22ce, #1a237e);
+
+  color: white;
 }
 .custom-scroll {
   max-height: 100%; /* or 100% if drawer is scrollable */
