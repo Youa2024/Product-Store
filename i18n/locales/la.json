@@ -58,5 +58,6 @@
   "btn_delete": "ລືບ",
   "crate_edit": "ວັນທີແກ້ໄຂ",
   "change_image": "ປ່ຽນຮູບ",
-  "add": "ເພີ່ມ"
+  "add": "ເພີ່ມ",
+  "latLong": "ທີ່ຕັ້ງ (google map)"
 }

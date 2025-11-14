@@ -11,7 +11,21 @@
   border: 1px solid red !important;
 }
 .my-swal-icon {
-  width: 80px !important;   /* icon width */
-  height: 80px !important;  /* icon height */
+  width: 80px !important; /* icon width */
+  height: 80px !important; /* icon height */
   font-size: 80px !important; /* for font-based icons like mdi */
+}
+.bg-primary {
+  background: radial-gradient(ellipse at center, #be45f7, #0c0c0c);
+  color: white;
+}
+
+.v-data-table thead tr {
+  background: radial-gradient(ellipse at center, #be45f7, #000000) !important;
+}
+
+.v-data-table thead th {
+  background: transparent !important; /* keep gradient visible */
+  color: white !important;
+  font-weight: 600 !important;
 }

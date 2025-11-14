@@ -58,5 +58,6 @@
   "btn_delete": "Xóa bỏ",
   "crate_edit": "Ngày Chỉnh sửa",
   "change_image": "Thay đổi hình ảnh",
-  "add": "Thêm vào"
+  "add": "Thêm vào",
+  "latLong": "Vị trí (bản đồ Google)"
 }

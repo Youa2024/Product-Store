@@ -160,7 +160,7 @@ useHead({
 <style scoped>
 .app-bar-image {
 
-  background: radial-gradient(ellipse at center, #7e22ce, #1a237e);
+  background: radial-gradient(ellipse at center, #7e22ce, #6a74e2);
 
   color: white;
 }

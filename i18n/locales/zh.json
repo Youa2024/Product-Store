@@ -58,5 +58,6 @@
   "btn_delete": "删除",
   "crate_edit": "日期 编辑",
   "change_image": "更改图像",
-  "add": "添加"
+  "add": "添加",
+  "latLong": "位置（谷歌地图）"
 }

@@ -4,7 +4,7 @@
       ><v-col cols="12" md="12" sm="6"
         ><v-card color="" class="pa-5">
           <v-card rounded="xl" elevation="2">
-            <v-card-title primary-title class="d-flex gradient-purple-green">
+            <v-card-title primary-title class="d-flex bg-primary">
               {{ $t("conpany_info") }}
             </v-card-title>
             <v-divider></v-divider>
@@ -153,14 +153,22 @@
           <br />
           <v-card rounded="xl">
             <v-card-text>
+              <v-text-field
+                v-model="search"
+                rounded="xl"
+                flat
+                clearable
+                prepend-inner-icon="mdi-magnify"
+                placeholder="ຄົ້ນຫາລູກຄ້າ..."
+              ></v-text-field>
               <v-data-table
                 :headers="headers"
                 :items="allData"
+                :search="search"
                 hide-actions
-                class="elevation-1"
+                class="elevation-1 "
                 pagination.sync="pagination"
                 item-key="id"
-                :search="search"
               >
                 <template #item.id="{ index, item }">
                   {{ index + 1 }}
@@ -181,13 +189,14 @@
     <!-- // loading -->
     <MLoading v-model="loading"></MLoading>
   </div>
-  >
+  
 </template>
 
 <script setup>
 import { ref } from "vue";
 const { mainApi } = useApi();
 const { t } = useI18n();
+const search = ref(null);
 const groupId = ref("");
 const comName = ref(null);
 const comType = ref(null);
@@ -296,7 +305,7 @@ const insert = async () => {
 // table header
 
 const headers = ref([
-  { title: "#", key: "id", align: "start" },
+  { title: "#", key: "id", align: "start", class: "v-data-table__thead" },
   { title: t("conpany_Id"), key: "companyId", align: "start" },
   { title: t("conpany_name"), key: "companyName", align: "start" },
   { title: t("select_conpany_type"), key: "comType", align: "start" },
@@ -305,13 +314,8 @@ const headers = ref([
   { title: t("village"), key: "village", align: "start" },
   { title: t("phone"), key: "phone", align: "start" },
   { title: t("branch_atm"), key: "branchAtm", align: "end" },
-  { title: t("actions"), key: "actions", align: "start" },
+  { title: t("actions"), key: "actions", align: "start", sort: false },
 ]);
 </script>
 
-<style lang="scss" scoped>
-.gradient-purple-green {
-  background: radial-gradient(ellipse at center, #7e22ce, #000000);
-  color: white;
-}
-</style>
+<style lang="scss" scoped></style>
