@@ -59,7 +59,8 @@
   "crate_edit": "Date Edit",
   "change_image": "Change Image",
   "add": "Add",
-  "latLong": "Location (google map)"
+  "latLong": "Location (google map)",
+  "input_info": "Input address"
   
 
 }

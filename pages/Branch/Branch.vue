@@ -50,16 +50,8 @@
                       prepend-inner-icon="mdi-account-group"
                       clearable
                       v-model="userLogin"
+                      @input="userLogin = userLogin.toUpperCase()"
                       :rules="rules"
-                    ></v-text-field
-                  ></v-col>
-                  <v-col cols="3">
-                    <v-text-field
-                      rounded="xl"
-                      :label="$t('account')"
-                      prepend-inner-icon="mdi-numeric"
-                      clearable
-                      v-model="accountNo"
                     ></v-text-field
                   ></v-col>
                   <v-col cols="3">
@@ -71,6 +63,16 @@
                       v-model="accountName"
                     ></v-text-field
                   ></v-col>
+                  <v-col cols="3">
+                    <v-text-field
+                      rounded="xl"
+                      :label="$t('account')"
+                      prepend-inner-icon="mdi-numeric"
+                      clearable
+                      v-model="accountNo"
+                    ></v-text-field
+                  ></v-col>
+
                   <v-col cols="3">
                     <v-text-field
                       rounded="xl"
@@ -93,6 +95,23 @@
                       :rules="rules"
                     ></v-text-field
                   ></v-col>
+                </v-row>
+              </v-card>
+              <!-- tap2 -->
+              <br />
+              <div class="d-flex align-center">
+                <b style="white-space: nowrap; margin-right: 8px">{{
+                  $t("input_info")
+                }}</b>
+                <v-divider class="flex-grow-1"></v-divider>
+              </div>
+              <v-card
+                rounded="xl"
+                class="pa-5 mt-1"
+                elevation="0"
+                style="border: 1px solid green; border-radius: 12px"
+              >
+                <v-row>
                   <v-col cols="3">
                     <v-text-field
                       rounded="xl"
@@ -137,6 +156,7 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
+                v-if="id == null"
                 color="primary"
                 rounded="xl"
                 variant="outlined"
@@ -144,6 +164,16 @@
                 @click="insertBranch()"
                 ><v-icon class="mr-4">mdi-content-save-all</v-icon
                 >{{ $t("save") }}</v-btn
+              >
+              <v-btn
+                v-else
+                color="blue"
+                rounded="xl"
+                variant="outlined"
+                type="submit"
+                @click="updateData()"
+                ><v-icon class="mr-4">mdi-content-save-all</v-icon
+                >{{ $t("btn_edit") }}</v-btn
               >
             </v-card-actions></v-form
           >
@@ -153,17 +183,33 @@
           <v-card-text>
             <v-data-table
               :headers="headers"
-              :items="companies_list"
+              :items="branchDAta"
+              :search="search"
               hide-actions
               class="elevation-1"
               pagination.sync="pagination"
               item-key="id"
-              search="search"
             >
+              <template #item.id="{ index, item }">
+                {{ index + 1 }}
+              </template>
+              <template #item.actions="{ item }">
+                <div class="d-flex">
+                  <v-btn
+                    color="blue"
+                    rounded="xl"
+                    variant="outlined"
+                    @click="SelectItem(item)"
+                    ><v-icon>mdi-pen</v-icon>{{ $t("btn_edit") }}</v-btn
+                  >
+                </div>
+              </template>
             </v-data-table>
           </v-card-text>
-        </v-card> </v-card></v-col
-  ></v-row>
+        </v-card>
+      </v-card></v-col
+    ></v-row
+  >
   <!-- // loading -->
   <MLoading v-model="loading"></MLoading>
 </template>
@@ -187,6 +233,10 @@ const companies = ref([]);
 const company = ref(null);
 const valid = ref(false);
 const form = ref(null);
+const branchDAta = ref([]);
+const id = ref(null);
+const search = ref(null);
+const loading = ref(false);
 // role for feild
 const rules = [
   (value) => {
@@ -195,23 +245,86 @@ const rules = [
   },
 ];
 // table header
-
 const headers = ref([
-  { title: "#", key: "grounId", align: "start" },
-  { title: t("conpany_name"), key: "grounId", align: "start" },
-  { title: t("branch_name"), key: "comName", align: "end" },
-  { title: t("login_name"), key: "comType", align: "start" },
-  { title: t("account"), key: "province", align: "start" },
-  { title: t("account_name"), key: "district", align: "end" },
-  { title: t("branch_email"), key: "village", align: "start" },
-  { title: t("phone"), key: "phone", align: "start" },
-  { title: t("user_Type"), key: "branchAtm", align: "end" },
+  { title: "#", key: "id", align: "start" },
+  { title: t("conpany_name"), key: "companyId", align: "start" },
+  { title: t("branch_name"), key: "branchName", align: "end" },
+  { title: t("login_name"), key: "userLogin", align: "start" },
+  { title: t("account"), key: "accountNo", align: "start" },
+  { title: t("account_name"), key: "accountName", align: "end" },
+  { title: t("branch_email"), key: "email", align: "start" },
+  { title: t("phone"), key: "phoneNumber", align: "start" },
+  { title: t("province"), key: "province", align: "start" },
+  { title: t("district"), key: "district", align: "end" },
+  { title: t("village"), key: "village", align: "start" },
+  { title: t("actions"), key: "actions", align: "start" },
 ]);
 
 // Method======
 onMounted(() => {
-  getCompanies();
+  getAllBranch();
 });
+//update data
+const updateData = async () => {
+  loading.value = true;
+  const body = {
+    id: id.value,
+    companyId: company.value,
+    branchName: branchName.value,
+    userLogin: userLogin.value,
+    accountName: accountName.value,
+    accountNo: accountNo.value,
+    userType: "normal user",
+    email: email.value,
+    phoneNumber: phone.value,
+    province: province.value,
+    district: district.value,
+    village: village.value,
+    latLong: latLong.value,
+  };
+  const res = await mainApi.post("updateBranch", body);
+
+  if (res.data.status == "00") {
+    loading.value = false;
+    showSuccess(res.data.message);
+    getAllBranch();
+    cleanData();
+    loading.value = false;
+  } else {
+    showError(res.data.message);
+  }
+};
+
+//clean data
+const cleanData = (item) => {
+  id.value = null;
+  branchName.value = null;
+  userLogin.value = null;
+  company.value = null;
+  accountName.value = null;
+  accountNo.value = null;
+  email.value = null;
+  phone.value = "020";
+  province.value = null;
+  district.value = null;
+  village.value = null;
+  latLong.value = null;
+};
+//select item===============
+const SelectItem = (item) => {
+  id.value = item.id;
+  branchName.value = item.branchName;
+  userLogin.value = item.userLogin;
+  company.value = item.companyId;
+  accountName.value = item.accountName;
+  accountNo.value = item.accountNo;
+  email.value = item.email;
+  phone.value = item.phoneNumber;
+  province.value = item.province;
+  district.value = item.district;
+  village.value = item.village;
+  latLong.value = item.latLong;
+};
 // insert Brach
 const insertBranch = async () => {
   const { valid } = await form.value.validate();
@@ -241,10 +354,10 @@ const insertBranch = async () => {
   }
 };
 // get All companies
-const getCompanies = async () => {
-  const res = await mainApi.get("getAllCompanies");
+const getAllBranch = async () => {
+  const res = await mainApi.get("getAllBranch");
   if (res.data.status == "00") {
-    companies.value = res.data.res;
+    branchDAta.value = res.data.dataRes;
   } else {
     showError(res.data.message);
   }

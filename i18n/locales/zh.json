@@ -59,5 +59,6 @@
   "crate_edit": "日期 编辑",
   "change_image": "更改图像",
   "add": "添加",
-  "latLong": "位置（谷歌地图）"
+  "latLong": "位置（谷歌地图）",
+  "input_info": "输入地址"
 }
