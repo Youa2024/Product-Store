@@ -60,5 +60,7 @@
   "change_image": "ປ່ຽນຮູບ",
   "add": "ເພີ່ມ",
   "latLong": "ທີ່ຕັ້ງ (google map)",
-  "input_info": "ປ້ອນຂໍ້ມູນທີ່ຢູ່"
+  "input_info": "ປ້ອນຂໍ້ມູນທີ່ຢູ່",
+  "info": "ຂໍ້ມູນ",
+  "input": "ປ້ອນ"
 }

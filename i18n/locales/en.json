@@ -60,7 +60,9 @@
   "change_image": "Change Image",
   "add": "Add",
   "latLong": "Location (google map)",
-  "input_info": "Input address"
+  "input_info": "Input address",
+  "info": "information",
+  "input": "input"
   
 
 }

@@ -60,5 +60,7 @@
   "change_image": "Thay đổi hình ảnh",
   "add": "Thêm vào",
   "latLong": "Vị trí (bản đồ Google)",
-  "input_info": "địa chỉ đầu vào"
+  "input_info": "địa chỉ đầu vào",
+  "info": "thông tin",
+  "input": "đầu vào"
 }
