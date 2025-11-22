@@ -62,7 +62,10 @@
   "latLong": "Location (google map)",
   "input_info": "Input address",
   "info": "information",
-  "input": "input"
-  
+  "input": "input",
+  "customer_info": "Customer Information",
+  "customer_name": "Customer Name",
+  "customer_store_name": "Store Name",
+  "customer_street": "Street"
 
 }

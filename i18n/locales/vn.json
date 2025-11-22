@@ -62,5 +62,9 @@
   "latLong": "Vị trí (bản đồ Google)",
   "input_info": "địa chỉ đầu vào",
   "info": "thông tin",
-  "input": "đầu vào"
+  "input": "đầu vào",
+  "customer_info": "Thông tin khách hàng",
+  "customer_name": "Tên khách hàng",
+  "customer_store_name": "Tên cửa hàng",
+  "customer_street": "đường phố"
 }

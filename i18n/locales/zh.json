@@ -62,5 +62,8 @@
   "latLong": "位置（谷歌地图）",
   "input_info": "输入地址",
   "info": "信息",
-  "input": "输入"
+  "input": "输入",
+  "customer_info": "客户信息",
+  "customer_name": "客户名称",
+  "customer_store_name": "店铺名称"
 }

@@ -62,5 +62,9 @@
   "latLong": "ທີ່ຕັ້ງ (google map)",
   "input_info": "ປ້ອນຂໍ້ມູນທີ່ຢູ່",
   "info": "ຂໍ້ມູນ",
-  "input": "ປ້ອນ"
+  "input": "ປ້ອນ",
+  "customer_info": "ຂໍ້ມູນລູກຄ້າ",
+  "customer_name": "ຊື່ລູກຄ້າ",
+  "customer_store_name": "ຊື່ຮ້ານ",
+  "customer_street": "ຮ່ອມທາງ"
 }
