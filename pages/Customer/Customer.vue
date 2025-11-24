@@ -22,25 +22,36 @@
                 style="border: 1px solid green; border-radius: 12px"
               >
                 <v-row>
-                 
+                  <v-col cols="3">
+                    <v-text-field
+                      rounded="xl"
+                      :label="$t('customer_store_name')"
+                      prepend-inner-icon="mdi-store-marker-outline"
+                      clearable
+                      v-model="storeName"
+                    ></v-text-field
+                  ></v-col>
                   <v-col cols="3"
                     ><v-text-field
                       rounded="xl"
                       :label="$t('customer_name')"
-                      prepend-inner-icon="mdi-home-account"
+                      prepend-inner-icon="mdi-account-tie"
                       clearable
                       v-model="custName"
                       :rules="rules"
-                    ></v-text-field> </v-col
-                  > <v-col cols="3">
-                    <v-text-field
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3"
+                    ><v-text-field
                       rounded="xl"
-                      :label="$t('customer_store_name')"
+                      :label="$t('customer_id_card')"
                       prepend-inner-icon="mdi-card-account-details"
                       clearable
-                      v-model="storeName"
-                    ></v-text-field
-                  ></v-col><v-col cols="3">
+                      v-model="idCard"
+                      :rules="rules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3">
                     <v-text-field
                       rounded="xl"
                       :label="$t('login_name')"
@@ -110,7 +121,7 @@
                       :rules="rules"
                     ></v-text-field
                   ></v-col>
-                   <v-col cols="3">
+                  <v-col cols="3">
                     <v-text-field
                       rounded="xl"
                       :label="$t('customer_street')"
@@ -120,7 +131,7 @@
                       :rules="rules"
                     ></v-text-field
                   ></v-col>
-                  
+
                   <v-col cols="3">
                     <v-text-field
                       rounded="xl"
@@ -140,7 +151,7 @@
                 rounded="xl"
                 variant="outlined"
                 type="submit"
-                @click="insertBranch()"
+                @click="insertCustomer()"
                 ><v-icon class="mr-4">mdi-content-save-all</v-icon
                 >{{ $t("save") }}</v-btn
               >
@@ -212,6 +223,7 @@ const branchDAta = ref([]);
 const id = ref(null);
 const search = ref(null);
 const loading = ref(false);
+const idCard=ref(false)
 // role for feild
 const rules = [
   (value) => {
@@ -222,12 +234,9 @@ const rules = [
 // table header
 const headers = ref([
   { title: "#", key: "id", align: "start" },
-  { title: t("conpany_name"), key: "companyId", align: "start" },
-  { title: t("branch_name"), key: "branchName", align: "end" },
+  { title: t("customer_store_name"), key: "companyId", align: "start" },
+  { title: t("customer_name"), key: "branchName", align: "end" },
   { title: t("login_name"), key: "userLogin", align: "start" },
-  { title: t("account"), key: "accountNo", align: "start" },
-  { title: t("account_name"), key: "accountName", align: "end" },
-  { title: t("branch_email"), key: "email", align: "start" },
   { title: t("phone"), key: "phoneNumber", align: "start" },
   { title: t("province"), key: "province", align: "start" },
   { title: t("district"), key: "district", align: "end" },
@@ -301,14 +310,14 @@ const SelectItem = (item) => {
   latLong.value = item.latLong;
 };
 // insert Brach
-const insertBranch = async () => {
+const insertCustomer = async () => {
   const { valid } = await form.value.validate();
   const body = {
-   custName: custName.value,
-  storeName: storeName.value,
-  custTel: phone.value,
-  street: street.value,
-  userLogin: userLogin.value,
+    custName: custName.value,
+    storeName: storeName.value,
+    custTel: phone.value,
+    street: street.value,
+    userLogin: userLogin.value,
     province: province.value,
     district: district.value,
     village: village.value,

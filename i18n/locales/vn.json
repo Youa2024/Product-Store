@@ -66,5 +66,6 @@
   "customer_info": "Thông tin khách hàng",
   "customer_name": "Tên khách hàng",
   "customer_store_name": "Tên cửa hàng",
-  "customer_street": "đường phố"
+  "customer_street": "đường phố",
+  "customer_id_card": "CMND/hộ chiếu"
 }
