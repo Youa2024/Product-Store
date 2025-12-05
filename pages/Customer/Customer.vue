@@ -223,7 +223,8 @@ const branchDAta = ref([]);
 const id = ref(null);
 const search = ref(null);
 const loading = ref(false);
-const idCard=ref(false)
+const idCard = ref(null);
+const userLogin = ref(null);
 // role for feild
 const rules = [
   (value) => {
@@ -234,19 +235,21 @@ const rules = [
 // table header
 const headers = ref([
   { title: "#", key: "id", align: "start" },
-  { title: t("customer_store_name"), key: "companyId", align: "start" },
-  { title: t("customer_name"), key: "branchName", align: "end" },
+  { title: t("customer_store_name"), key: "storeName", align: "start" },
+  { title: t("customer_name"), key: "custName", align: "start" },
   { title: t("login_name"), key: "userLogin", align: "start" },
-  { title: t("phone"), key: "phoneNumber", align: "start" },
+  { title: "IdCard/passport", key: "idCard", align: "start" },
+  { title: t("phone"), key: "custTel", align: "start" },
   { title: t("province"), key: "province", align: "start" },
   { title: t("district"), key: "district", align: "end" },
+
   { title: t("village"), key: "village", align: "start" },
   { title: t("actions"), key: "actions", align: "start" },
 ]);
 
 // Method======
 onMounted(() => {
-  getAllBranch();
+  getCustomers();
 });
 //update data
 const updateData = async () => {
@@ -309,7 +312,15 @@ const SelectItem = (item) => {
   village.value = item.village;
   latLong.value = item.latLong;
 };
-// insert Brach
+// methods
+const getCustomers = async () => {
+  const res = await mainApi.get("getCustomers");
+  if (res.data.status == "00") {
+    branchDAta.value = res.data.dataRes;
+  } else {
+    showSuccess(res.data.message);
+  }
+};
 const insertCustomer = async () => {
   const { valid } = await form.value.validate();
   const body = {
@@ -322,6 +333,7 @@ const insertCustomer = async () => {
     district: district.value,
     village: village.value,
     latLong: latLong.value,
+    idCard: idCard.value,
   };
   console.log("==============body=======:", body);
 
@@ -330,19 +342,11 @@ const insertCustomer = async () => {
     if (res.data.status == "00") {
       companies.value = res.data.res;
     } else {
-      showError(res.data.message);
+      showSuccess(res.data.message);
     }
   }
 };
 // get All companies
-const getAllBranch = async () => {
-  const res = await mainApi.get("getAllBranch");
-  if (res.data.status == "00") {
-    branchDAta.value = res.data.dataRes;
-  } else {
-    showError(res.data.message);
-  }
-};
 </script>
 
 <style lang="scss" scoped></style>

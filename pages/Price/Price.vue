@@ -253,19 +253,7 @@ const rules = [
     return t("rule");
   },
 ];
-// format as user types
 
-const formatCurrency = () => {
-  let value = currencyInput.value.replace(/[^\d.]/g, ""); // allow only numbers & dot
-  if (value) {
-    const [intPart, decimalPart] = value.split(".");
-    // add commas to integer part
-    const withCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    currencyInput.value = decimalPart
-      ? `${withCommas}.${decimalPart.slice(0, 2)}`
-      : withCommas;
-  }
-};
 // table header
 
 const headers = ref([

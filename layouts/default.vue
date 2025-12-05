@@ -1,7 +1,7 @@
 <template>
   <ClientOnly fallback-tag="div">
     <VApp>
-      <VAppBar class="app-bar-image" flat v-if="userData != null">
+      <VAppBar class="bg-primary" flat v-if="userData != null">
         <v-app-bar-nav-icon
           variant="text"
           @click.stop="drawer = !drawer"
@@ -158,10 +158,14 @@ useHead({
 });
 </script>
 <style scoped>
+/*
 .app-bar-image {
-
   background: radial-gradient(ellipse at center, #7e22ce, #6a74e2);
 
+  color: white;
+}*/
+.bg-primary {
+  background: radial-gradient(ellipse at center, #1572dd, #5db7f3);
   color: white;
 }
 .custom-scroll {

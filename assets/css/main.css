@@ -15,14 +15,21 @@
   height: 80px !important; /* icon height */
   font-size: 80px !important; /* for font-based icons like mdi */
 }
-.bg-primary {
+/* .bg-primary {
   background: radial-gradient(ellipse at center, #be45f7, #0c0c0c);
   color: white;
-}
+} */
 
-.v-data-table thead tr {
-  background: radial-gradient(ellipse at center, #be45f7, #000000) !important;
+.bg-primary {
+  background: radial-gradient(ellipse at center, #1572dd, #5db7f3);
+  color: white;
 }
+.v-data-table thead tr {
+  background: radial-gradient(ellipse at center, #1572dd, #5db7f3) !important;
+}
+/* .v-data-table thead tr {
+  background: radial-gradient(ellipse at center, #be45f7, #000000) !important;
+} */
 
 .v-data-table thead th {
   background: transparent !important; /* keep gradient visible */
