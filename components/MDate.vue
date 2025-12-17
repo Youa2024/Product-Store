@@ -7,7 +7,6 @@
       transition="scale-transition"
       offset-y
       min-width="auto"
-      
     >
       <template v-slot:activator="{ props }">
         <v-text-field

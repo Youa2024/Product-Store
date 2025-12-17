@@ -28,7 +28,7 @@
                       :label="$t('customer_store_name')"
                       prepend-inner-icon="mdi-store-marker-outline"
                       clearable
-                      v-model="storeName"
+                      v-model="request.storeName"
                     ></v-text-field
                   ></v-col>
                   <v-col cols="3"
@@ -37,7 +37,7 @@
                       :label="$t('customer_name')"
                       prepend-inner-icon="mdi-account-tie"
                       clearable
-                      v-model="custName"
+                      v-model="request.custName"
                       :rules="rules"
                     ></v-text-field>
                   </v-col>
@@ -47,7 +47,7 @@
                       :label="$t('customer_id_card')"
                       prepend-inner-icon="mdi-card-account-details"
                       clearable
-                      v-model="idCard"
+                      v-model="request.idCard"
                       :rules="rules"
                     ></v-text-field>
                   </v-col>
@@ -57,8 +57,10 @@
                       :label="$t('login_name')"
                       prepend-inner-icon="mdi-account-group"
                       clearable
-                      v-model="userLogin"
-                      @input="userLogin = userLogin.toUpperCase()"
+                      v-model="request.userLogin"
+                      @input="
+                        request.userLogin = request.userLogin.toUpperCase()
+                      "
                       :rules="rules"
                     ></v-text-field
                   ></v-col>
@@ -69,7 +71,7 @@
                       prepend-inner-icon="mdi-phone"
                       clearable
                       type="number"
-                      v-model="phone"
+                      v-model="request.phone"
                       placeholder="020xxxx xxxx"
                       :rules="rules"
                     ></v-text-field
@@ -92,32 +94,40 @@
               >
                 <v-row>
                   <v-col cols="3">
-                    <v-text-field
-                      rounded="xl"
-                      :label="$t('province')"
-                      prepend-inner-icon="mdi-home-group"
-                      clearable
-                      v-model="province"
+                    <v-autocomplete
+                      v-model="request.province"
+                      :items="provinces"
+                      item-value="id"
+                      item-title="proName"
+                      :label="$t('select') + $t('province')"
+                      variant="outlined"
+                      rounded
                       :rules="rules"
-                    ></v-text-field
-                  ></v-col>
+                      clearable
+                      @update:model-value="onSelectProvince(request.province)"
+                    ></v-autocomplete>
+                  </v-col>
                   <v-col cols="3">
-                    <v-text-field
-                      rounded="xl"
-                      :label="$t('district')"
-                      prepend-inner-icon="mdi-home-circle-outline"
-                      clearable
-                      v-model="district"
+                    <v-autocomplete
+                      v-model="request.district"
+                      :items="districts"
+                      item-value="id"
+                      item-title="disName"
+                      :label="$t('select') + $t('district')"
+                      variant="outlined"
+                      rounded
                       :rules="rules"
-                    ></v-text-field
-                  ></v-col>
+                      return-object
+                      clearable
+                    ></v-autocomplete>
+                  </v-col>
                   <v-col cols="3">
                     <v-text-field
                       rounded="xl"
                       :label="$t('village')"
                       prepend-inner-icon="mdi-home-sound-in-outline"
                       clearable
-                      v-model="village"
+                      v-model="request.village"
                       :rules="rules"
                     ></v-text-field
                   ></v-col>
@@ -127,7 +137,7 @@
                       :label="$t('customer_street')"
                       prepend-inner-icon="mdi-arrow-left-right-bold-outline"
                       clearable
-                      v-model="street"
+                      v-model="request.street"
                       :rules="rules"
                     ></v-text-field
                   ></v-col>
@@ -138,7 +148,7 @@
                       :label="$t('latLong')"
                       prepend-inner-icon="mdi-map-marker-radius"
                       clearable
-                      v-model="latLong"
+                      v-model="request.latLong"
                     ></v-text-field
                   ></v-col>
                 </v-row>
@@ -146,12 +156,12 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                v-if="id == null"
+                v-if="request.id == null"
                 color="primary"
                 rounded="xl"
                 variant="outlined"
                 type="submit"
-                @click="insertCustomer()"
+                @click="insert()"
                 ><v-icon class="mr-4">mdi-content-save-all</v-icon
                 >{{ $t("save") }}</v-btn
               >
@@ -206,25 +216,28 @@
 
 <script setup>
 import { ref } from "vue";
+
 const { mainApi } = useApi();
+const request = useCustomerStore();
+const proDist = useProvDistStore();
 const { showSuccess, showWarning, showError } = useAlert();
 const { t } = useI18n();
-const custName = ref("");
-const storeName = ref(null);
+
 const phone = ref("020");
 const province = ref(null);
 const district = ref(null);
 const village = ref(null);
-const street = ref(null);
+
 const latLong = ref(null);
-const valid = ref(false);
 const form = ref(null);
-const branchDAta = ref([]);
+
 const id = ref(null);
 const search = ref(null);
 const loading = ref(false);
 const idCard = ref(null);
 const userLogin = ref(null);
+const isValid = ref(false);
+
 // role for feild
 const rules = [
   (value) => {
@@ -242,16 +255,26 @@ const headers = ref([
   { title: t("phone"), key: "custTel", align: "start" },
   { title: t("province"), key: "province", align: "start" },
   { title: t("district"), key: "district", align: "end" },
-
   { title: t("village"), key: "village", align: "start" },
   { title: t("actions"), key: "actions", align: "start" },
 ]);
 
 // Method======
+const branchDAta = computed(() => request.request_customer.branchDAta);
+const provinces = computed(() => proDist.Provinces);
+const districts = computed(() => proDist.Districts);
 onMounted(() => {
-  getCustomers();
+  request.getCustomers();
+  proDist.getProvinces();
 });
+
 //update data
+const onSelectProvince = async (proId) => {
+  console.log("province==============", proId);
+
+  proDist.dist_request.proId = proId;
+  await proDist.getDistricts();
+};
 const updateData = async () => {
   loading.value = true;
   const body = {
@@ -313,39 +336,16 @@ const SelectItem = (item) => {
   latLong.value = item.latLong;
 };
 // methods
-const getCustomers = async () => {
-  const res = await mainApi.get("getCustomers");
-  if (res.data.status == "00") {
-    branchDAta.value = res.data.dataRes;
-  } else {
-    showSuccess(res.data.message);
-  }
-};
-const insertCustomer = async () => {
-  const { valid } = await form.value.validate();
-  const body = {
-    custName: custName.value,
-    storeName: storeName.value,
-    custTel: phone.value,
-    street: street.value,
-    userLogin: userLogin.value,
-    province: province.value,
-    district: district.value,
-    village: village.value,
-    latLong: latLong.value,
-    idCard: idCard.value,
-  };
-  console.log("==============body=======:", body);
 
+const insert = async () => {
+  const { valid } = await form.value.validate();
   if (valid) {
-    const res = await mainApi.post("insertCustomer", body);
-    if (res.data.status == "00") {
-      companies.value = res.data.res;
-    } else {
-      showSuccess(res.data.message);
-    }
+    await request.insertCustomer();
+  } else {
+    showError("Please fill in the required fields.");
   }
 };
+
 // get All companies
 </script>
 
