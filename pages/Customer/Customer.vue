@@ -95,7 +95,7 @@
                 <v-row>
                   <v-col cols="3">
                     <v-autocomplete
-                      v-model="request.province"
+                      v-model="request.pro"
                       :items="provinces"
                       item-value="id"
                       item-title="proName"
@@ -104,12 +104,13 @@
                       rounded
                       :rules="rules"
                       clearable
-                      @update:model-value="onSelectProvince(request.province)"
+                      @update:model-value="onSelectProvince(request.pro)"
+                      return-object
                     ></v-autocomplete>
                   </v-col>
                   <v-col cols="3">
                     <v-autocomplete
-                      v-model="request.district"
+                      v-model="request.dist"
                       :items="districts"
                       item-value="id"
                       item-title="disName"
@@ -234,7 +235,6 @@ const form = ref(null);
 const id = ref(null);
 const search = ref(null);
 const loading = ref(false);
-const idCard = ref(null);
 const userLogin = ref(null);
 const isValid = ref(false);
 
@@ -260,7 +260,7 @@ const headers = ref([
 ]);
 
 // Method======
-const branchDAta = computed(() => request.request_customer.branchDAta);
+const branchDAta = computed(() => request.branchDAta);
 const provinces = computed(() => proDist.Provinces);
 const districts = computed(() => proDist.Districts);
 onMounted(() => {
@@ -272,7 +272,7 @@ onMounted(() => {
 const onSelectProvince = async (proId) => {
   console.log("province==============", proId);
 
-  proDist.dist_request.proId = proId;
+  proDist.dist_request.proId = proId.id;
   await proDist.getDistricts();
 };
 const updateData = async () => {
@@ -297,8 +297,8 @@ const updateData = async () => {
   if (res.data.status == "00") {
     loading.value = false;
     showSuccess(res.data.message);
-    getAllBranch();
-    cleanData();
+    request.getCustomers();
+    request.cleanData();
     loading.value = false;
   } else {
     showError(res.data.message);
@@ -306,20 +306,7 @@ const updateData = async () => {
 };
 
 //clean data
-const cleanData = (item) => {
-  id.value = null;
-  branchName.value = null;
-  userLogin.value = null;
-  company.value = null;
-  accountName.value = null;
-  accountNo.value = null;
-  email.value = null;
-  phone.value = "020";
-  province.value = null;
-  district.value = null;
-  village.value = null;
-  latLong.value = null;
-};
+
 //select item===============
 const SelectItem = (item) => {
   id.value = item.id;
