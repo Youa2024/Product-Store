@@ -2,14 +2,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
 
   devtools: { enabled: true },
-  nitro: {
-    devProxy: {
-      "/api": {
-        target: "http://localhost:8080", // your backend
-        changeOrigin: true,
-      },
-    },
-  },
+
 
   imports: {
     // Auto-import is enabled by default, but you can configure it

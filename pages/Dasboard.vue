@@ -125,8 +125,8 @@
           >
         </v-card-actions>
       </v-card>
-    </v-dialog> </v-container
-  >>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script setup>
