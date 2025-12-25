@@ -64,9 +64,8 @@
 <script setup>
 const { showSuccess, showError, showWarning, showConfirm } = useAlert();
 import { ref } from "vue";
-import { useUserSession } from "../composables/useUser";
+
 import { useRouter } from "#imports";
-import nuxtStorage from "nuxt-storage";
 const { login } = useAuth();
 const { setUser, loggedIn } = useUserSession();
 const { $axios } = useNuxtApp();
@@ -78,7 +77,7 @@ const remober = ref(false);
 const router = useRouter();
 const config = useRuntimeConfig();
 const loading = ref(false);
-
+const customerLogin = useCustomerStore();
 onMounted(() => {
   const reme = localStorage.getItem("remember");
   if (process.env.NODE_ENV === "development") {
@@ -115,15 +114,12 @@ const checkRemember = () => {
 };
 const handleLogin = async () => {
   loading.value = true;
-  navigateTo("/home");
-  // loading.value = false;
-  try {
-    // await login(user.value, password.value, locale.value).then(() => {});
-    // await navigateTo("/home");
-    // const router = useRouter();
-  } catch (e) {
-    console.log("error==================", e);
-  }
+  const body = {
+    userLogin: user.value,
+    passWord: password.value,
+  };
+  await customerLogin.customerLogin(body);
+  loading.value = false;
 };
 </script>
 

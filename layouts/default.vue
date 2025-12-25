@@ -1,98 +1,43 @@
 <template>
-  <ClientOnly fallback-tag="div">
-    <VApp>
-      <VAppBar class="bg-primary" flat v-if="userData != null">
-        <v-app-bar-nav-icon
-          variant="text"
-          @click.stop="drawer = !drawer"
-          color="white"
-        ></v-app-bar-nav-icon>
 
-        <v-toolbar-title
-          ><p class="text-white">
-            {{ $t("border") }}
-            <b>( {{ $t("user") }}: {{ user }} )</b>
-          </p></v-toolbar-title
-        >
+  <VApp>
+   
+    <VAppBar class="bg-primary">
+      <v-app-bar-nav-icon
+        variant="text"
+        @click.stop="drawer = !drawer"
+        color="white"
+      ></v-app-bar-nav-icon>
 
-        <div class="text-white">
-          <v-avatar size="x-large" color="white">
-            <v-img alt="Johnfff" :src="userData.imagePath"></v-img> </v-avatar
-          ><br />
-        </div>
 
-        <Mbtn
-          color="white"
-          icon="mdi-logout"
-          label="Logout"
-          @click="handleLogout"
-        ></Mbtn>
-      </VAppBar>
-      <!-- <VNavigationDrawer
-        :image="logo"
-        theme="dark"
-        permanent
-        :width="400"
-        v-model="drawer"
-        v-if="userData != null"
-        class="custom-scroll"
-        app
-      >
-        <div>
-          <v-list
-            v-for="user in userData.menu"
-            :key="user.menuLo"
-            :to="user.menuPath"
-            nav
-          >
-            <v-list-group>
-              <template #activator="{ props }">
-                <v-list-item v-bind="props">
-                  <v-list-item-title
-                    ><v-icon size="30" class="mr-3">{{ user.iconMenu }}</v-icon
-                    >{{ user.menuLo }}</v-list-item-title
-                  >
-                </v-list-item>
-              </template>
+      <Mbtn
+        color="white"
+        icon="mdi-logout"
+        label="Logout"
+        @click="handleLogout"
+      ></Mbtn>
+    </VAppBar>
 
-              <v-list-item
-                v-for="child in user.childMenu"
-                :key="child.childMenuId"
-                :to="child.childMenuPath"
-              >
-                <v-list-item-title>
-                  <v-icon class="mr-3">{{ child.childIconMenu }}</v-icon
-                  >{{ child.childMenuLo }}</v-list-item-title
-                >
-              </v-list-item>
-            </v-list-group>
-          </v-list>
-        </div>
-      </VNavigationDrawer> -->
       <VMain class="d-flex" style="min-height: 100vh">
-        <!-- <NuxtPage /> -->
-        <slot />
-      </VMain>
-    </VApp>
-  </ClientOnly>
+  
+      <slot />
+    </VMain>
+  </VApp>
+ 
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
 import { useI18n } from "#imports";
-import logo from "@/public/bg_login_biz.png";
+
 const drawer = ref(true);
 
 import { watch } from "vue";
 
-const { user, userData, logout } = useAuth();
-
 const { locale, setLocale } = useI18n();
 onMounted(() => {
   const reme = localStorage.getItem("remember");
-  console.log("==============reme===========:", userData.value);
   // check language====================
   const saved = localStorage.getItem("lang");
-  console.log("==================lang=============:", saved);
 
   if (saved) {
     setLocale(saved);
@@ -101,20 +46,10 @@ onMounted(() => {
     setLocale(locale.value);
     console.log("==================locale.value=============:", locale.value);
   }
-  // check data or list menu===================
-  console.log("user data first============:", userData.value);
-  if (userData.value == null) {
-    if (process.client) {
-      const stored = localStorage.getItem("userData");
-      userData.value = stored ? JSON.parse(stored) : null;
-      user.value = stored ? localStorage.getItem("user") : null;
-      console.log("user data list============:", userData.value);
-    }
-  }
+
 });
 
 const handleLogout = async () => {
-  logout();
   await navigateTo("/login"); // clears everything in the browser
 };
 

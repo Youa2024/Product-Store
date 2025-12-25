@@ -1,8 +1,6 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-
-import tsconfigPaths from "vite-tsconfig-paths";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
+
   devtools: { enabled: true },
   nitro: {
     devProxy: {
@@ -38,13 +36,13 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  plugins: ["~/plugins/vue-echarts.client.ts"],
+
   build: {
     transpile: ["vuetify", "xlsx"],
   },
 
   vite: {
-    plugins: [tsconfigPaths()],
+    // plugins: [tsconfigPaths()],
     define: {
       "process.env.DEBUG": false,
     },

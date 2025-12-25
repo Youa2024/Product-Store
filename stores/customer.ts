@@ -26,7 +26,7 @@ export const useCustomerStore = defineStore("customer", {
       const { mainApi } = useApi();
       return mainApi;
     },
-    
+
     cleanData() {
       this.id = null;
       this.custName = null;
@@ -42,6 +42,14 @@ export const useCustomerStore = defineStore("customer", {
       this.response_data = [];
       this.branchDAta = [];
     },
+    async customerLogin(body: any) {
+      const res = await this.callapi().post("getCustomerByUserAndPass", body);
+      if (res.data.status == "00") {
+        navigateTo("/Dasboard");
+      } else {
+        CallSwal({ icon: "error", title: "ຜິດພາດ", text: res.data.message });
+      }
+    },
     async getCustomers() {
       const res = await this.callapi().get("getCustomers");
       if (res.data.status == "00") {
@@ -50,11 +58,11 @@ export const useCustomerStore = defineStore("customer", {
         CallSwal({ icon: "error", title: "ຜິດພາດ", text: res.data.message });
       }
     },
-      async updateCustomer() {
+    async updateCustomer() {
       console.log("pro===============", this.pro);
 
       const body = {
-        id:this.id,
+        id: this.id,
         custName: this.custName,
         storeName: this.storeName,
         custTel: this.phone,
