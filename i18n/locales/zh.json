@@ -66,5 +66,13 @@
   "customer_info": "客户信息",
   "customer_name": "客户名称",
   "customer_store_name": "店铺名称",
-  "customer_id_card": "身份证/护照"
+  "customer_id_card": "身份证/护照",
+  "select_size": "选择尺码",
+  "unit": "单元",
+  "package": "包裹",
+  "desc_select_size": "请先选择尺码 !!!",
+  "product_details": "产品详情",
+  "add_qty": "添加数量",
+  "add_to_card": "添加到购物车",
+  "exchange_branch_date": "按日期更换店铺"
 }

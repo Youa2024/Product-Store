@@ -35,7 +35,7 @@
   "product_image_package": "ຮູບພາບສິນຄ້າ / ແກັດ",
   "product_info": "ຂໍ້ມູນສິນຄ້າ",
   "search": "ຄົ້ນຫາ",
-  "price_unit": "ລາຄາ/ຫນ່ວຍ",
+  "price_unit": "ລາຄາ/ແພັກ",
   "price_package": "ລາຄາ/ແກັດ",
   "price": "ລາຄາ",
   "actions": "ຈັດການ",
@@ -67,5 +67,13 @@
   "customer_name": "ຊື່ລູກຄ້າ",
   "customer_store_name": "ຊື່ຮ້ານ",
   "customer_street": "ຮ່ອມທາງ",
-  "customer_id_card": "ລະຫັດບັດ/passport/ສໍາມະໂນຄົວ"
+  "customer_id_card": "ລະຫັດບັດ/passport/ສໍາມະໂນຄົວ",
+  "select_size": "ເລືອກຂະຫນາດ",
+  "unit": "ແພັກ",
+  "package": "ແກັດ",
+  "desc_select_size": "ກະລຸນາເລືອກຂະໜາດກ່ອນ !!!",
+  "product_details": "ລາຍລະອຽດສິນຄ້າ",
+  "add_qty": "ເພີ່ມຈໍານວນ",
+  "add_to_card": "ເພີ່ມໃສ່ກະຕ່າ",
+  "exchange_branch_date": "ອັດ​ຕາ​ແລກ​ປ່ຽນຂອງຮ້ານຄ້າຕາມວັນທີ"
 }
