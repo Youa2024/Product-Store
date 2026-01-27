@@ -75,5 +75,6 @@
   "product_details": "ລາຍລະອຽດສິນຄ້າ",
   "add_qty": "ເພີ່ມຈໍານວນ",
   "add_to_card": "ເພີ່ມໃສ່ກະຕ່າ",
-  "exchange_branch_date": "ອັດ​ຕາ​ແລກ​ປ່ຽນຂອງຮ້ານຄ້າຕາມວັນທີ"
+  "exchange_branch_date": "ອັດ​ຕາ​ແລກ​ປ່ຽນຂອງຮ້ານຄ້າຕາມວັນທີ",
+  "select_main_currency": "ເລືອກສະກຸນເງິນຕົຫຼັກ"
 }

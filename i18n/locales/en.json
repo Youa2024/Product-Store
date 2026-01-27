@@ -75,5 +75,6 @@
   "product_details": "Product Details",
   "add_qty": "Add Quantity",
   "add_to_card": "Add to cart",
-  "exchange_branch_date": "Exchange of store by date"
+  "exchange_branch_date": "Exchange of store by date",
+  "select_main_currency": "Select Main Currency"
 }

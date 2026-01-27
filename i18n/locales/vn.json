@@ -75,5 +75,6 @@
   "product_details": "chi tiết sản phẩm",
   "add_qty": "Thêm số lượng",
   "add_to_card": "thêm vào giỏ hàng",
-  "exchange_branch_date": "Đổi trả hàng trước ngày"
+  "exchange_branch_date": "Đổi trả hàng trước ngày",
+  "select_main_currency": "chọn loại tiền tệ chính"
 }
