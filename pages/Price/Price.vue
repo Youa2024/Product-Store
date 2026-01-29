@@ -39,7 +39,8 @@
                 margin-top: 5px;
               ">
             <div class="d-flex">
-              <h3 class="pt-1">{{ $t("select_main_currency") }}:</h3><v-radio-group v-model="CurrencyRadio" inline>
+              <h3 class="pt-1">{{ $t("select_main_currency") }}:</h3><v-radio-group
+                v-model="price.request.selectCurrency" inline>
                 <v-radio label="LAK" value="lak" color="primary"></v-radio>
                 <v-radio label="THB" value="thb" color="primary"></v-radio>
                 <v-radio label="USD" value="usd" color="primary"></v-radio>
@@ -54,7 +55,7 @@
                     {{ $t("price_unit") }} <b class="text-blue">LAK</b>
                   </p>
                 </span>
-                <v-text-field rounded="xl" clearable v-model="lak_unit"
+                <v-text-field rounded="xl" clearable v-model="price.request.lakUnit"
                   @input="lak_unit = $formatCurrency(lak_unit)"></v-text-field></v-col>
               <v-col cols="3">
                 <span>
@@ -62,7 +63,7 @@
                     {{ $t("price_package") }} <b class="text-blue">LAK</b>
                   </p>
                 </span>
-                <v-text-field rounded="xl" clearable v-model="lak_package"
+                <v-text-field rounded="xl" clearable v-model="price.request.lakPackage"
                   @input="lak_package = $formatCurrency(lak_package)"></v-text-field></v-col>
               <v-col cols="3">
                 <span>
@@ -70,7 +71,7 @@
                     {{ $t("price_unit") }} <b class="text-red">THB</b>
                   </p>
                 </span>
-                <v-text-field rounded="xl" clearable v-model="thb_unit"
+                <v-text-field rounded="xl" clearable v-model="price.request.thbUnit"
                   @input="thb_unit = $formatCurrency(thb_unit)"></v-text-field></v-col>
               <v-col cols="3">
                 <span>
@@ -78,7 +79,7 @@
                     {{ $t("price_package") }} <b class="text-red">THB</b>
                   </p>
                 </span>
-                <v-text-field rounded="xl" clearable v-model="thb_package"
+                <v-text-field rounded="xl" clearable v-model="price.request.thbPackage"
                   @input="thb_package = $formatCurrency(thb_package)"></v-text-field></v-col>
               <v-col cols="3">
                 <span>
@@ -86,7 +87,7 @@
                     {{ $t("price_unit") }} <b class="text-green">USD</b>
                   </p>
                 </span>
-                <v-text-field rounded="xl" clearable v-model="usd_unit"
+                <v-text-field rounded="xl" clearable v-model="price.request.usdUnit"
                   @input="usd_unit = $formatCurrency(usd_unit)"></v-text-field></v-col>
               <v-col cols="3">
                 <span>
@@ -94,13 +95,13 @@
                     {{ $t("price_package") }} <b class="text-green">USD</b>
                   </p>
                 </span>
-                <v-text-field rounded="xl" clearable v-model="usd_package"
+                <v-text-field rounded="xl" clearable v-model="price.request.usdPackage"
                   @input="usd_package = $formatCurrency(usd_package)"></v-text-field></v-col></v-row>
           </v-card>
         </v-card-text>
         <v-card-actions>
           <v-row justify="start"><v-col cols="12" md="6" sm="6">
-              <v-btn color="grey" class="mr-2" rounded="xl" variant="outlined" @click="cloarData()"><v-icon
+              <v-btn color="grey" class="mr-2" rounded="xl" variant="outlined" @click="price.cloarData()"><v-icon
                   class="mr-4">mdi-cancel</v-icon>{{ $t("btn_cancel") }}</v-btn>
               <v-btn v-if="edit == false" color="primary" rounded="xl" variant="outlined" type="submit"
                 @click="insertPrict()"><v-icon class="mr-4">mdi-content-save-all</v-icon>{{ $t("save") }}</v-btn>
@@ -152,7 +153,9 @@ const key_id = ref(null);
 const edit = ref(false);
 const loading = ref(false);
 const CurrencyRadio = ref("lak");
+const price = usePriceStore();
 const { showSuccess, showWarning, showError } = useAlert();
+
 // role for feild
 const rules = [
   (value) => {
@@ -195,62 +198,63 @@ onMounted(() => {
   getProducts();
   getBranches();
 });
-const cloarData = () => {
-  edit.value = false;
-  key_id.value = null;
-  branch.value = null;
-  product.value = null;
-  lak_unit.value = null;
-  lak_package.value = null;
-  thb_unit.value = null;
-  thb_package.value = null;
-  usd_unit.value = null;
-  usd_package.value = null;
-};
+
 const updatePrice = async () => {
-  loading.value = true;
-  var body = {
-    priceId: key_id.value,
-    branchId: branch.value,
-    productId: product.value,
-    lakUnit: lak_unit.value,
-    lakPackage: lak_package.value,
-    thbUnit: thb_unit.value,
-    thbPackage: thb_package.value,
-    usdUnit: usd_unit.value,
-    usdPackage: usd_package.value,
-    updateBy: localStorage.getItem("user"),
-    lak: CurrencyRadio.value == "lak" ? 1 : 0,
-    thb: CurrencyRadio.value == "thb" ? 1 : 0,
-    usd: CurrencyRadio.value == "usd" ? 1 : 0,
-  };
-  const res = await mainApi.put("updatePrice", body);
-  if (res.data.status == "00") {
-    loading.value = false;
-    cloarData();
+  const result = await price.request.updatePrice();
+  if (result.status == "00") {
+    price.loading = false;
+    price.cloarData();
     getAllPrices();
-    showSuccess(res.data.message);
+    showSuccess(result.message);
   } else {
-    showError(res.data.message);
+    showError(result.message);
   }
+  // loading.value = true;
+  // var body = {
+  //   priceId: key_id.value,
+  //   branchId: branch.value,
+  //   productId: product.value,
+  //   lakUnit: lak_unit.value,
+  //   lakPackage: lak_package.value,
+  //   thbUnit: thb_unit.value,
+  //   thbPackage: thb_package.value,
+  //   usdUnit: usd_unit.value,
+  //   usdPackage: usd_package.value,
+  //   updateBy: localStorage.getItem("user"),
+  //   lak: CurrencyRadio.value == "lak" ? 1 : 0,
+  //   thb: CurrencyRadio.value == "thb" ? 1 : 0,
+  //   usd: CurrencyRadio.value == "usd" ? 1 : 0,
+  // };
+  // const res = await mainApi.put("updatePrice", body);
+  // if (res.data.status == "00") {
+  //   loading.value = false;
+  //   cloarData();
+  //   getAllPrices();
+  //   showSuccess(res.data.message);
+  // } else {
+  //   showError(res.data.message);
+  // }
 };
 const showEdit = (item) => {
-  edit.value = true;
-  key_id.value = item.priceId;
-  branch.value = item.branchId;
-  product.value = item.productId;
-  lak_unit.value = item.lakUnit;
-  lak_package.value = item.lakPackage;
-  thb_unit.value = item.thbUnit;
-  thb_package.value = item.thbPackage;
-  usd_unit.value = item.usdUnit;
-  usd_package.value = item.usdPackage;
+  price.request.edit = true;
+  price.request.branchId = item.branchId;
+  price.request.productId = item.productId;
+  price.request.lakUnit = item.lakUnit;
+  price.request.lakPackage = item.lakPackage;
+  price.request.thbUnit = item.thbUnit;
+  price.request.thbPackage = item.thbPackage;
+  price.request.usdUnit = item.usdUnit;
+  price.request.usdPackage = item.usdPackage;
+  price.request.lak = item.lak;
+  price.request.thb = item.thb;
+  price.request.usd = item.usd;
+  price.key_id = item.priceId;
   if (item.lak == 1) {
-    CurrencyRadio.value = "lak";
+    price.request.selectCurrency = "lak";
   } else if (item.thb == 1) {
-    CurrencyRadio.value = "thb";
+    price.request.selectCurrency = "thb";
   } else if (item.usd == 1) {
-    CurrencyRadio.value = "usd";
+    price.request.selectCurrency = "usd";
   }
 };
 const getAllPrices = async () => {
@@ -263,30 +267,23 @@ const getAllPrices = async () => {
   }
 };
 const insertPrict = async () => {
-  var body = {
-    branchId: branch.value,
-    productId: product.value,
-    lakUnit: lak_unit.value,
-    lakPackage: lak_package.value,
-    thbUnit: thb_unit.value,
-    thbPackage: thb_package.value,
-    usdUnit: usd_unit.value,
-    usdPackage: usd_package.value,
-    createBy: 'youaadmin',
-    lak: CurrencyRadio.value == "lak" ? 1 : 0,
-    thb: CurrencyRadio.value == "thb" ? 1 : 0,
-    usd: CurrencyRadio.value == "usd" ? 1 : 0,
-  };
-  console.log("insert ===========:", body);
 
-  const res = await mainApi.post("insertPrice", body);
-  if (res.data.status == "00") {
-    loading.value = false;
-    cloarData();
-    getAllPrices();
+  if (!price.request.branchId && !price.request.productId) {
+    showWarning(t("please_select_branch_product"));
+    return;
   } else {
-    showError(res.data.message);
+    if (price.request.lakPackage == null || price.request.lakUnit == null || price.request.thbPackage == null || price.request.thbUnit == null || price.request.usdPackage == null || price.request.usdUnit == null) {
+      showWarning(t("please_input_price"));
+      return;
+    }
+    price.loading = true;
+    await price.request.insertPrict();
+    price.loading = false;
+    return;
   }
+  // loading.value = true;
+
+
 };
 const getProducts = async () => {
   const res = await mainApi.get("getProducts");

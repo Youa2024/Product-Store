@@ -99,13 +99,13 @@
               <h3>{{ $t('total') }}: <v-btn color="green" variant="outlined">{{ formatCurrency(amount) }}</v-btn> <b
                   class="text-blue">KIP</b></h3>
               <h3 class="pt-2">{{ $t('total') }}: <v-btn color="red" variant="outlined">{{ formatCurrency(amountTHB)
-              }}</v-btn> <b class="text-red">THB</b></h3>
+                  }}</v-btn> <b class="text-red">THB</b></h3>
             </v-col></v-row>
 
         </v-card-text>
         <v-card-actions>
           <v-btn color="secondary" variant="outlined" @click="cancel()"><v-icon>mdi-cancel</v-icon>{{ $t('btn_cancel')
-          }}</v-btn>
+            }}</v-btn>
           <v-btn color="primary" variant="outlined"><v-icon>mdi-checkbox-marked</v-icon> {{ $t('add_to_card') }}</v-btn>
 
         </v-card-actions>
@@ -127,6 +127,7 @@ const { showWarning } = useAlert()
 const exChangeRate = useExchangeStore()
 const imageDetails = ref([])
 const product = useProductStore()
+
 const pDetails = computed(() => product.products)
 const unit_size = ref(false)
 const package_size = ref(false)
@@ -134,6 +135,7 @@ const amount = ref(0)
 const amountTHB = ref(0)
 
 const branchExchange = computed(() => exChangeRate.exchanges)
+
 
 const selectedItem = (size) => {
   if (size === 'unit') {
